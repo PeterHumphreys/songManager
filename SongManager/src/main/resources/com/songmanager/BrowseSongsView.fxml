@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<VBox alignment="TOP_CENTER" spacing="20.0" xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.songmanager.BrowseSongsController" style="-fx-background-color: royalblue;">
+    <padding>
+        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
+    </padding>
+
+    <VBox style="-fx-padding: 25 25 25 25; -fx-background-color: cornflowerblue;">
+        <!--List of Songs-->
+        <Label fx:id="songListHeader" text="List of Songs" style =" -fx-text-fill: #fff; -fx-font-size: 16; -fx-font-size: 24"/>
+        <ComboBox fx:id="songList" style="-fx-max-width: 375"></ComboBox>
+
+    </VBox>
+</VBox>

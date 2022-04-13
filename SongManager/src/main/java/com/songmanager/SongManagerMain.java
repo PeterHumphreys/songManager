@@ -16,7 +16,8 @@ public class SongManagerMain extends Application {
     }
 
     @Override
-    public void start(Stage stage) throws IOException {
+    public void start(Stage stage) throws IOException
+    {
         FXMLLoader fxmlLoader = new FXMLLoader(SongManagerMain.class.getResource("AddRemoveSongsView.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 1366, 768);
         stage.setTitle("Hello!");

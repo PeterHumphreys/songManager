@@ -69,13 +69,5 @@
             <!--Add Song Button-->
             <Button fx:id="addSongBtn" text="Add Song" onAction="#AddSongBtnClick" style="-fx-padding: 5;"/>
         </VBox>
-        <VBox style="-fx-padding: 25 25 25 25; -fx-background-color: cornflowerblue;">
-            <!--List of Songs-->
-            <Label fx:id="songListHeader" text="List of Songs" style =" -fx-text-fill: #fff; -fx-font-size: 16; -fx-font-size: 24"/>
-            <ComboBox fx:id="songList" style="-fx-max-width: 375"></ComboBox>
-
-        </VBox>
     </HBox>
-
-
 </VBox>

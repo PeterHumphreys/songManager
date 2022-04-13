@@ -62,33 +62,30 @@ public class AddRemoveSongsController implements Initializable
     //add song button
     @FXML private Button addSongBtn;
 
-    //Song List VBox
-    //song list header
-    @FXML private Label songListHeader;
 
-   public AddRemoveSongsController()
-   {
-       //this.dbManager = new DBManager();
-   }
+    public AddRemoveSongsController()
+    {
+        //this.dbManager = new DBManager();
+    }
 
-   @FXML protected void AddSongBtnClick()
-   {
-       if (isValidInput())
-       {
-           this.songTitleString = this.songTitle.getText().toString();
-           this.artistString = this.artistName.getText().toString();
-           this.genreString = this.genre.getText().toString();
-           //Default value for now
-           this.songLengthString = "00:03:12";
-           this.yearString = this.yearReleased.getValue().toString();
-           this.recordLabelString = this.recordLabel.getText().toString();
-           this.albumString = this.album.getText().toString();
+    @FXML protected void AddSongBtnClick()
+    {
+        if (isValidInput())
+        {
+            this.songTitleString = this.songTitle.getText().toString();
+            this.artistString = this.artistName.getText().toString();
+            this.genreString = this.genre.getText().toString();
+            //Default value for now
+            this.songLengthString = "00:03:12";
+            this.yearString = this.yearReleased.getValue().toString();
+            this.recordLabelString = this.recordLabel.getText().toString();
+            this.albumString = this.album.getText().toString();
 
-           DBManager.addSong(songTitleString, artistString, genreString, songLengthString, yearString, recordLabelString, albumString);
+            DBManager.addSong(songTitleString, artistString, genreString, songLengthString, yearString, recordLabelString, albumString);
 
-           feedbackLabel.setText("Added song");
-       }
-   }
+            feedbackLabel.setText("Added song");
+        }
+    }
 
     private boolean isValidInput()
     {
