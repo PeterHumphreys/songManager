@@ -7,16 +7,87 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.geometry.Insets?>
 
-<VBox alignment="TOP_CENTER" spacing="20.0" xmlns:fx="http://javafx.com/fxml"
+<VBox alignment="TOP_CENTER" xmlns:fx="http://javafx.com/fxml"
       fx:controller="com.songmanager.BrowseSongsController" style="-fx-background-color: royalblue;">
-    <padding>
-        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
-    </padding>
 
-    <VBox style="-fx-padding: 25 25 25 25; -fx-background-color: cornflowerblue;">
-        <!--List of Songs-->
-        <Label fx:id="songListHeader" text="List of Songs" style =" -fx-text-fill: #fff; -fx-font-size: 16; -fx-font-size: 24"/>
-        <ComboBox fx:id="songList" style="-fx-max-width: 375"></ComboBox>
+    <fx:include source="NavBar.fxml"></fx:include>
+    <Label text="Browse Songs" style =" -fx-text-fill: #fff; -fx-font-size: 36;"/>
 
+    <VBox  alignment="CENTER" style="-fx-background-color: royalblue;" maxWidth="750">
+
+        <Label fx:id="errorMessage" style="-fx-text-fill: #fff; -fx-font-size: 16; -fx-padding: 10 0 0 0"></Label>
+        <VBox style="-fx-padding: 25 25 25 25; -fx-background-color: cornflowerblue;">
+            <HBox style="-fx-padding: 0 0 25 0">
+                <!--Criteria selector-->
+                <VBox>
+                    <Label>Filter by: </Label>
+                    <HBox>
+                        <ComboBox fx:id="criteriaComboBox"></ComboBox>
+                        <Button style="-fx-background-color:navy; -fx-text-fill:white; -fx-font-size: 12;" fx:id="selectCriteriaBtn" onAction="#selectCriteriaBtnClick">Select</Button>
+                    </HBox>
+                </VBox>
+
+                <!--Criteria boxes-->
+                <VBox fx:id="criteriaBox" style="-fx-padding:0 10 0 10">
+                    <VBox fx:id="artistBox">
+                        <Label>Artist</Label>
+                        <HBox>
+                            <ComboBox fx:id="artistComboBox"></ComboBox>
+                            <Button style="-fx-background-color:navy; -fx-text-fill:white; -fx-font-size: 12;" fx:id="addArtistBtn" onAction="#addArtistBtnClick">Select</Button>
+                        </HBox>
+                    </VBox>
+
+                    <VBox fx:id="genreBox">
+                        <Label>Genre</Label>
+                        <HBox>
+                            <ComboBox fx:id="genreComboBox"></ComboBox>
+                            <Button style="-fx-background-color:navy; -fx-text-fill:white; -fx-font-size: 12;" fx:id="addGenreBtn" onAction="#addGenreBtnClick">Select</Button>
+                        </HBox>
+                    </VBox>
+
+                    <VBox fx:id="yearBox">
+                        <HBox>
+                            <VBox style="-fx-padding: 0 10 0 0">
+                                <Label>Start Year</Label><ComboBox fx:id="startYear"></ComboBox>
+                            </VBox>
+                            <VBox>
+                                <Label>End Year</Label><ComboBox fx:id="endYear"></ComboBox>
+                            </VBox>
+                            <VBox>
+                                <Label> </Label>
+                                <Button style="-fx-background-color:navy; -fx-text-fill:white; -fx-font-size: 12;" fx:id="addYearBtn" onAction="#addGenreBtnClick">Select</Button>
+                            </VBox>
+                        </HBox>
+                    </VBox>
+
+                    <VBox fx:id="recordLabelBox">
+                        <Label>Record Label</Label>
+                        <HBox>
+                            <ComboBox fx:id="recordLabelComboBox"></ComboBox><Button style="-fx-background-color:navy; -fx-text-fill:white; -fx-font-size: 12">Select</Button>
+                        </HBox>
+                    </VBox>
+
+                    <VBox fx:id="lengthOfSongBox">
+                        <HBox>
+                            <VBox style="-fx-padding: 0 10 0 0">
+                                <Label>Min Length</Label><ComboBox fx:id="songLengthLowerLimit"></ComboBox>
+                            </VBox>
+                            <VBox>
+                                <Label>Max Length</Label><ComboBox fx:id="songLengthUpperLimit"></ComboBox>
+                            </VBox>
+                            <VBox>
+                                <Label> </Label>
+                                <Button style="-fx-background-color:navy; -fx-text-fill:white; -fx-font-size: 12;" fx:id="lengthOfSongBtn" onAction="#addGenreBtnClick">Select</Button>
+                            </VBox>
+                        </HBox>
+                    </VBox>
+                </VBox>
+            </HBox>
+
+            <Button fx:id ="filterSongsBtn" style="-fx-background-color:navy; -fx-text-fill:white; -fx-font-size: 16; -fx-spacing: 10;">Filter Songs</Button>
+
+            <Label>Songs</Label>
+            <ListView fx:id="songList" style="-fx-max-width: 375"></ListView>
+        </VBox>
     </VBox>
 </VBox>
