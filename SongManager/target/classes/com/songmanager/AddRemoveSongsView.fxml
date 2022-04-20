@@ -10,13 +10,15 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.control.Spinner?>
-<VBox alignment="TOP_CENTER" spacing="20.0" xmlns:fx="http://javafx.com/fxml"
+<?import javafx.scene.control.ListView?>
+<VBox alignment="TOP_CENTER" spacing="0" xmlns:fx="http://javafx.com/fxml"
       fx:controller="com.songmanager.AddRemoveSongsController" style="-fx-background-color: royalblue;">
-    <padding>
-        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
-    </padding>
-    <Label fx:id="pageHeader" text="Welcome to SongManager" style =" -fx-text-fill: #fff; -fx-font-size: 36"/>
-    <HBox style="-fx-padding: 25 25 25 25; -fx-background-color: royalblue; -fx-spacing: 30">
+    <fx:include source="NavBar.fxml"></fx:include>
+
+    <Label fx:id="pageHeader" text="Modify Your Library" style =" -fx-text-fill: #fff; -fx-font-size: 36"/>
+    <Label style =" -fx-text-fill: #fff; -fx-font-size: 18">Message</Label>
+
+    <HBox  alignment="CENTER" style="-fx-padding: 25 25 25 25; -fx-background-color: royalblue; -fx-spacing: 30">
         <!--Manually add a song-->
         <VBox style="-fx-padding: 25 25 25 25; -fx-background-color: cornflowerblue;">
             <!--Manually add a song-->
@@ -67,15 +69,21 @@
             <!--User feedback message-->
             <Label fx:id="feedbackLabel" text="" style =" -fx-text-fill: #fff; -fx-font-size: 16; -fx-font-size: 16"/>
             <!--Add Song Button-->
-            <Button fx:id="addSongBtn" text="Add Song" onAction="#AddSongBtnClick" style="-fx-padding: 5;"/>
+            <Button fx:id="addSongBtn" text="Add Song" onAction="#AddSongBtnClick"  style="-fx-background-color:navy; -fx-text-fill:white; -fx-font-size: 16"/>
+
         </VBox>
         <VBox style="-fx-padding: 25 25 25 25; -fx-background-color: cornflowerblue;">
-            <!--List of Songs-->
-            <Label fx:id="songListHeader" text="List of Songs" style =" -fx-text-fill: #fff; -fx-font-size: 16; -fx-font-size: 24"/>
-            <ComboBox fx:id="songList" style="-fx-max-width: 375"></ComboBox>
+            <Label text="Remove a song" style =" -fx-text-fill: #fff; -fx-font-size: 24"/>
+            <HBox style="-fx-padding: 10"><TextField style="-fx-max-width: 375"></TextField><Button style="-fx-background-color:navy; -fx-text-fill:white; -fx-font-size: 12">Search</Button></HBox>
+            <ListView></ListView>
+            <Button style="-fx-background-color:navy; -fx-text-fill:white; -fx-font-size: 16">Remove</Button>
+        </VBox>
+        <VBox style="-fx-padding: 25 25 25 25; -fx-background-color: cornflowerblue;">
+            <Label text="Edit a song" style =" -fx-text-fill: #fff; -fx-font-size: 24"/>
 
+            <HBox style="-fx-padding: 10"><TextField style="-fx-max-width: 375"></TextField><Button style="-fx-background-color:navy; -fx-text-fill:white; -fx-font-size: 12">Search</Button></HBox>
+            <ListView></ListView>
+            <Button style="-fx-background-color:navy; -fx-text-fill:white; -fx-font-size: 16">Edit</Button>
         </VBox>
     </HBox>
-
-
 </VBox>
