@@ -1,5 +1,13 @@
 package com.songmanager;
 
+import javafx.event.ActionEvent;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
+
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
 
@@ -10,4 +18,5 @@ public class SongManagerController
     public SongManagerController()
     {
     }
+
 }
