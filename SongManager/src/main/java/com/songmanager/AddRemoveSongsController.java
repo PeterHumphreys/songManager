@@ -10,7 +10,7 @@ import java.util.ResourceBundle;
 
 public class AddRemoveSongsController implements Initializable
 {
-    //private DBManager dbManager;
+    private DBManager dbManager;
     private String songTitleString;
     private String artistString;
     private String genreString;
@@ -68,7 +68,7 @@ public class AddRemoveSongsController implements Initializable
 
    public AddRemoveSongsController()
    {
-       //this.dbManager = new DBManager();
+       this.dbManager = new DBManager("jdbc:mariadb://localhost:3306/songsproject", "root", "root");
    }
 
    @FXML protected void AddSongBtnClick()
@@ -84,7 +84,7 @@ public class AddRemoveSongsController implements Initializable
            this.recordLabelString = this.recordLabel.getText().toString();
            this.albumString = this.album.getText().toString();
 
-           DBManager.addSong(songTitleString, artistString, genreString, songLengthString, yearString, recordLabelString, albumString);
+           dbManager.addSong(songTitleString, artistString, genreString, songLengthString, yearString, recordLabelString, albumString);
 
            feedbackLabel.setText("Added song");
        }
