@@ -26,12 +26,12 @@ public class SongManagerMain extends Application {
         stage.setTitle("Song Manager");
         stage.show();
     }
-        /*
-        //FXMLLoader fxmlLoader = new FXMLLoader(SongManagerMain.class.getResource("AddRemoveSongsView.fxml"));
-        Parent root = FXMLLoader.load(getClass().getResource("AddRemoveSongsView.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 1366, 768);
-        stage.setTitle("Song Manager");
-        stage.setScene(scene);
-        stage.show();*/
+    /*
+    //FXMLLoader fxmlLoader = new FXMLLoader(SongManagerMain.class.getResource("AddRemoveSongsView.fxml"));
+    Parent root = FXMLLoader.load(getClass().getResource("AddRemoveSongsView.fxml"));
+    Scene scene = new Scene(fxmlLoader.load(), 1366, 768);
+    stage.setTitle("Song Manager");
+    stage.setScene(scene);
+    stage.show();*/
     public static void main(String[] args) throws Exception {launch();}
 }
