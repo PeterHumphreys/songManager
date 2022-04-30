@@ -5,7 +5,9 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 
 import java.net.URL;
+import java.sql.ResultSet;
 import java.time.Year;
+import java.util.Collection;
 import java.util.ResourceBundle;
 
 public class AddRemoveSongsController implements Initializable
@@ -66,6 +68,10 @@ public class AddRemoveSongsController implements Initializable
     //song list header
     @FXML private Label songListHeader;
 
+    //Remove Song Vbox
+    //Remove Song ListView
+    @FXML private ListView<String> removeSongList;
+
    public AddRemoveSongsController()
    {
        this.dbManager = new DBManager("jdbc:mariadb://localhost:3306/songsproject", "root", "root");
@@ -85,8 +91,33 @@ public class AddRemoveSongsController implements Initializable
            this.albumString = this.album.getText().toString();
 
            dbManager.addSong(songTitleString, artistString, genreString, songLengthString, yearString, recordLabelString, albumString);
-
            feedbackLabel.setText("Added song");
+           updateLists();
+       }
+   }
+
+   @FXML protected void RemoveSongBtnClick()
+   {
+        String songToRemove = removeSongList.getSelectionModel().getSelectedItem();
+        dbManager.deleteSong(songToRemove);
+        updateLists();
+   }
+
+   //Updates the ListViews on the page to correctly display the songs available
+   private void updateLists()
+   {
+       ResultSet resultSet = dbManager.getSongs();
+       try {
+           removeSongList.getItems().clear();
+           while (resultSet.next()) {
+               String name = resultSet.getString(1);
+               removeSongList.getItems().add(name);
+
+           }
+       }
+       catch(Exception e)
+       {
+            System.out.println(e);
        }
    }
 
@@ -143,6 +174,7 @@ public class AddRemoveSongsController implements Initializable
         //Add all years from start to current year to the yearReleased comboBox
         for (int year = Integer.valueOf(Year.now().toString()); year >= 1900 ; year--)
             this.yearReleased.getItems().add(year);
+        updateLists();
         //this.songLengthSpinner.set
     }
 }

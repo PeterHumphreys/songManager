@@ -60,6 +60,8 @@ public class BrowseSongsController implements Initializable
     @FXML CheckBox yearCheckBox;
     @FXML CheckBox artistCheckBox;
     @FXML CheckBox albumCheckBox;
+
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle)
     {

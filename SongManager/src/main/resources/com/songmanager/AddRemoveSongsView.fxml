@@ -75,8 +75,8 @@
         <VBox style="-fx-padding: 25 25 25 25; -fx-background-color: cornflowerblue;">
             <Label text="Remove a song" style =" -fx-text-fill: #fff; -fx-font-size: 24"/>
             <HBox style="-fx-padding: 10"><TextField style="-fx-max-width: 375"></TextField><Button style="-fx-background-color:navy; -fx-text-fill:white; -fx-font-size: 12">Search</Button></HBox>
-            <ListView></ListView>
-            <Button style="-fx-background-color:navy; -fx-text-fill:white; -fx-font-size: 16">Remove</Button>
+            <ListView fx:id="removeSongList" style="-fx-max-width: 375"></ListView>
+            <Button fx:id="removeSongBtn" text="Remove Song" onAction="#RemoveSongBtnClick" style="-fx-background-color:navy; -fx-text-fill:white; -fx-font-size: 16">Remove</Button>
         </VBox>
         <VBox style="-fx-padding: 25 25 25 25; -fx-background-color: cornflowerblue;">
             <Label text="Edit a song" style =" -fx-text-fill: #fff; -fx-font-size: 24"/>

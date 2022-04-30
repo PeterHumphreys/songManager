@@ -4,7 +4,6 @@ import java.sql.*;
 
 public class DBManager
 {
-    //TODO: create a connection variable / establish connection when DBManager is created.
     private Connection connection;
 
     public DBManager(String url, String user, String pwd)
@@ -53,7 +52,6 @@ public class DBManager
         finally {System.out.println("createTable function completed...");};
     }
 
-    //TODO: Use correct way.
     //Adds a song to the db
     public void addSong(String title, String artist,  String genre, String songLength, String year, String recordLabel, String album)
     {
@@ -85,12 +83,28 @@ public class DBManager
     }
 
     //TODO: RETREIVE SONGS / ARTISTS / ANYTHING ELSE
-    /*public static Song getSong()
+
+    public ResultSet getSongs()
     {
+        ResultSet resultSet = null;
+        try {
 
-    }*/
+            System.out.println("Reading data..");
+            try(PreparedStatement statement = connection.prepareStatement("""
+                    SELECT SongTitle
+                    FROM song""")){
+                resultSet = statement.executeQuery();
+            }
 
-//TODO: DELETE
+        }
+        catch(Exception e)
+        {
+            System.out.println(e);
+        }
+        return resultSet;
+    }
+
+
 
     public void deleteSong(String songName)
     {
