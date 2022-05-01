@@ -1,9 +1,20 @@
 package com.songmanager;
 
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.stage.Modality;
+import javafx.stage.Popup;
+import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
+import java.io.IOException;
 import java.net.URL;
 import java.sql.ResultSet;
 import java.time.Year;
@@ -72,10 +83,16 @@ public class AddRemoveSongsController implements Initializable
     //Remove Song ListView
     @FXML private ListView<String> removeSongList;
 
-   public AddRemoveSongsController()
-   {
+    //Edit Song ListView
+    @FXML private ListView<String> editSongList;
+
+    //Edit Song Button
+    @FXML private Button editSongBtn;
+
+    public AddRemoveSongsController()
+    {
        this.dbManager = new DBManager("jdbc:mariadb://localhost:3306/songsproject", "root", "root");
-   }
+    }
 
    @FXML protected void AddSongBtnClick()
    {
@@ -96,12 +113,55 @@ public class AddRemoveSongsController implements Initializable
        }
    }
 
-   @FXML protected void RemoveSongBtnClick()
-   {
+    @FXML protected void RemoveSongBtnClick()
+    {
         String songToRemove = removeSongList.getSelectionModel().getSelectedItem();
         dbManager.deleteSong(songToRemove);
         updateLists();
-   }
+    }
+
+    @FXML protected void EditSongBtnClick(ActionEvent event)
+    {
+        String songToEdit = editSongList.getSelectionModel().getSelectedItem();
+        //dbManager.methodthatupdatessong
+        try
+        {
+            openEditSongView(event);
+        }
+        catch(IOException ex)
+        {
+            ex.printStackTrace();
+        }
+        updateLists();
+    }
+
+
+    public void openEditSongView(ActionEvent event) throws IOException
+    {
+        String songToEdit = editSongList.getSelectionModel().getSelectedItem();
+
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("EditSongsView.fxml"));
+
+        Parent root = (Parent)loader.load();
+
+        EditSongsController controller = loader.<EditSongsController>getController();
+        controller.setSongToEdit(songToEdit);
+
+        Stage stage = new Stage();
+        Scene scene = new Scene(root,600,600);
+
+        stage.setScene(scene);
+        stage.initModality(Modality.APPLICATION_MODAL);
+
+        stage.show();
+        //Update lists upon closing popup
+        stage.setOnHiding(new EventHandler<WindowEvent>() {
+            @Override
+            public void handle(WindowEvent windowEvent) {
+                updateLists();
+            }
+        });
+    }
 
    //Updates the ListViews on the page to correctly display the songs available
    private void updateLists()
@@ -109,16 +169,18 @@ public class AddRemoveSongsController implements Initializable
        ResultSet resultSet = dbManager.getSongs();
        try {
            removeSongList.getItems().clear();
+           editSongList.getItems().clear();
            while (resultSet.next()) {
                String name = resultSet.getString(1);
                removeSongList.getItems().add(name);
-
+               editSongList.getItems().add(name);
            }
        }
        catch(Exception e)
        {
             System.out.println(e);
        }
+       System.out.println("FFFFdsffdsfsdfsdfsdF");
    }
 
     private boolean isValidInput()

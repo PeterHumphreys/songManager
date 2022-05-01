@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.songmanager.EditSongsController"
+      prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: royalblue;" spacing="0"  alignment="TOP_CENTER" >
+
+        <!--Song Title-->
+        <Label fx:id="songTitleLabel" text="Song Title" style =" -fx-text-fill: #fff; -fx-font-size: 16"/> <TextField fx:id="songTitle" style="-fx-max-width: 375"></TextField>
+        <!--Artist Name-->
+        <Label fx:id="artistNameLabel" text="Artist Name" style =" -fx-text-fill: #fff; -fx-font-size: 16"/><TextField fx:id="artistName" style="-fx-max-width: 375"></TextField>
+        <!--Album Name-->
+        <Label fx:id="albumLabel" text="Album" style =" -fx-text-fill: #fff; -fx-font-size: 16"/><TextField fx:id="album" style="-fx-max-width: 375"></TextField>
+        <!--Genre Label-->
+        <Label fx:id="genreLabel" text="Genre" style =" -fx-text-fill: #fff; -fx-font-size: 16"/><TextField fx:id="genre" style="-fx-max-width: 375"></TextField>
+        <!--Song Length-->
+        <Label fx:id="songLengthLabel" text="Song Length (HH:MM:SS)" style =" -fx-text-fill: #fff; -fx-font-size: 16"/>
+        <HBox>
+            <Spinner fx:id="hourSpinner" prefWidth="60">
+                <valueFactory>
+                    <javafx.scene.control.SpinnerValueFactory.IntegerSpinnerValueFactory fx:id="hourValueFactory">
+                        <min>00</min>
+                        <max>23</max>
+                        <wrapAround>true</wrapAround>
+                    </javafx.scene.control.SpinnerValueFactory.IntegerSpinnerValueFactory>
+                </valueFactory>
+            </Spinner>
+            <Spinner fx:id="minuteSpinner" prefWidth="60">
+                <valueFactory>
+                    <javafx.scene.control.SpinnerValueFactory.IntegerSpinnerValueFactory fx:id="minuteValueFactory">
+                        <min>00</min>
+                        <max>59</max>
+                        <wrapAround>true</wrapAround>
+                    </javafx.scene.control.SpinnerValueFactory.IntegerSpinnerValueFactory>>
+                </valueFactory>
+            </Spinner>
+            <Spinner fx:id="secondSpinner" prefWidth="60">
+                <valueFactory>
+                    <javafx.scene.control.SpinnerValueFactory.IntegerSpinnerValueFactory fx:id="secondValueFactory">
+                        <min>00</min>
+                        <max>59</max>
+                        <wrapAround>true</wrapAround>
+                    </javafx.scene.control.SpinnerValueFactory.IntegerSpinnerValueFactory>>
+                </valueFactory>
+            </Spinner>
+        </HBox>
+        <!--Record Label-->
+        <Label fx:id="recordLabelLabel" text="Record Label" style =" -fx-text-fill: #fff; -fx-font-size: 16"/><TextField fx:id="recordLabel" style="-fx-max-width: 375"></TextField>
+        <!--Year-->
+        <Label fx:id="yearReleasedLabel" text="Year Released" style =" -fx-text-fill: #fff; -fx-font-size: 16"/><ComboBox fx:id="yearReleased" style="-fx-max-width: 375"></ComboBox>
+        <!--Add Song Button-->
+        <Button fx:id="updateSongBtn" text="Update Song" onAction="#updateSongBtnClick"  style="-fx-background-color:navy; -fx-text-fill:white; -fx-font-size: 16"/>
+
+
+</VBox>

@@ -13,7 +13,7 @@
 <?import javafx.scene.control.ListView?>
 <VBox alignment="TOP_CENTER" spacing="0" xmlns:fx="http://javafx.com/fxml"
       fx:controller="com.songmanager.AddRemoveSongsController" style="-fx-background-color: royalblue;">
-    <fx:include source="NavBar.fxml"></fx:include>
+    <fx:include source="NavBar.fxml" fx:id="navBar"></fx:include>
 
     <Label fx:id="pageHeader" text="Modify Your Library" style =" -fx-text-fill: #fff; -fx-font-size: 36"/>
     <Label style =" -fx-text-fill: #fff; -fx-font-size: 18">Message</Label>
@@ -82,8 +82,8 @@
             <Label text="Edit a song" style =" -fx-text-fill: #fff; -fx-font-size: 24"/>
 
             <HBox style="-fx-padding: 10"><TextField style="-fx-max-width: 375"></TextField><Button style="-fx-background-color:navy; -fx-text-fill:white; -fx-font-size: 12">Search</Button></HBox>
-            <ListView></ListView>
-            <Button style="-fx-background-color:navy; -fx-text-fill:white; -fx-font-size: 16">Edit</Button>
+            <ListView fx:id="editSongList" style="-fx-max-width: 375"></ListView>
+            <Button fx:id="editSongBtn" onAction="#EditSongBtnClick" style="-fx-background-color:navy; -fx-text-fill:white; -fx-font-size: 16">Edit</Button>
         </VBox>
     </HBox>
 </VBox>
