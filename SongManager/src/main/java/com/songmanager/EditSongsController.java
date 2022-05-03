@@ -8,6 +8,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import java.net.URL;
+import java.sql.ResultSet;
 import java.time.Year;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -69,13 +70,28 @@ public class EditSongsController implements Initializable
         System.out.println(songToEdit);
 
         //TODO: Get all values from DB
-        this.songTitle.setText(songToEdit);
+        try{
+            ResultSet songInfo = dbManager.getSong(songToEdit);
+            if(songInfo.next()) {
+                this.songTitle.setText(songInfo.getString("SongTitle"));
+                this.artistName.setText(songInfo.getString("Artist"));
+                this.album.setText(songInfo.getString("Album"));
+                this.genre.setText(songInfo.getString("Genre"));
+                this.recordLabel.setText(songInfo.getString("Label"));
+                //yearReleasesd
+            }
+        }
+        catch(Exception e)
+        {
+            System.out.println(e);
+        }
     }
 
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle)
     {
+        this.dbManager = new DBManager("jdbc:mariadb://localhost:3306/songsproject", "root", "root");
 
     }
 
@@ -85,6 +101,14 @@ public class EditSongsController implements Initializable
         {
             Stage stage = (Stage) updateSongBtn.getScene().getWindow();
             // do what you have to do
+            songTitleString = this.songTitle.getText();
+            artistString = this.artistName.getText();
+            genreString = this.genre.getText();
+            songLengthString = "00:01:12";
+            yearString = "1999"; //this.yearReleased.getValue().toString()
+            recordLabelString = this.recordLabel.getText();
+            albumString = this.album.getText();
+            dbManager.editSong(songToEdit, songTitleString, artistString, genreString, songLengthString, yearString, recordLabelString, albumString);
             stage.close();
         }
     }

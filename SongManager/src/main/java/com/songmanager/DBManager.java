@@ -82,6 +82,36 @@ public class DBManager
 
     }
 
+    public void editSong(String oldTitle, String title, String artist,  String genre, String songLength, String year, String recordLabel, String album)
+    {
+        try
+        {
+            int rowsUpdated;
+            System.out.println("Creating data...");
+            try (PreparedStatement statement = connection.prepareStatement("""
+                    UPDATE song
+                    SET SongTitle = ?, Artist = ?, Genre = ?, LengthOfSong = ?, PublishedYear = ?, Label = ?, Album = ?
+                    WHERE SongTitle = ?""")) {
+                statement.setString(1, title);
+                statement.setString(2, artist);
+                statement.setString(3, genre);
+                statement.setString(4, songLength);
+                statement.setString(5, year);
+                statement.setString(6, recordLabel);
+                statement.setString(7, album);
+                statement.setString(8, oldTitle);
+
+                rowsUpdated = statement.executeUpdate();
+            }
+            System.out.println("Rows updated: " + rowsUpdated);
+
+        }
+        catch (Exception e)
+        {
+            System.out.println(e);
+        }
+    }
+
     //TODO: RETREIVE SONGS / ARTISTS / ANYTHING ELSE
 
     public ResultSet getSongs()
@@ -104,7 +134,27 @@ public class DBManager
         return resultSet;
     }
 
+    public ResultSet getSong(String songName)
+    {
+        ResultSet resultSet = null;
+        try {
 
+            System.out.println("Reading data..");
+            try(PreparedStatement statement = connection.prepareStatement("""
+                    SELECT SongTitle, Artist, Genre, LengthOfSong, PublishedYear, Label, Album
+                    FROM song
+                    WHERE SongTitle LIKE ?""")){
+                statement.setString(1, songName);
+                resultSet = statement.executeQuery();
+            }
+
+        }
+        catch(Exception e)
+        {
+            System.out.println(e);
+        }
+        return resultSet;
+    }
 
     public void deleteSong(String songName)
     {

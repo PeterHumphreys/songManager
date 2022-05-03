@@ -171,7 +171,7 @@ public class AddRemoveSongsController implements Initializable
            removeSongList.getItems().clear();
            editSongList.getItems().clear();
            while (resultSet.next()) {
-               String name = resultSet.getString(1);
+               String name = resultSet.getString("SongTitle");
                removeSongList.getItems().add(name);
                editSongList.getItems().add(name);
            }
@@ -180,7 +180,7 @@ public class AddRemoveSongsController implements Initializable
        {
             System.out.println(e);
        }
-       System.out.println("FFFFdsffdsfsdfsdfsdF");
+       //System.out.println("FFFFdsffdsfsdfsdfsdF");
    }
 
     private boolean isValidInput()
