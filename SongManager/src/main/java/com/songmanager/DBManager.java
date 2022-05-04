@@ -60,15 +60,15 @@ public class DBManager
             int rowsInserted;
             System.out.println("Creating data...");
             try (PreparedStatement statement = connection.prepareStatement("""
-                    INSERT INTO song(SongTitle, Artist, Genre, LengthOfSong, PublishedYear, Label, Album)
-                    VALUES (?,?,?,?,?,?,?)""")) {
+                    INSERT INTO song(SongTitle, ArtistName, GenreName,  RecordLabelName, AlbumName, Length)
+                    VALUES (?,?,?,?,?,?)""")) {
                 statement.setString(1, title);
                 statement.setString(2, artist);
                 statement.setString(3, genre);
-                statement.setString(4, songLength);
-                statement.setString(5, year);
-                statement.setString(6, recordLabel);
-                statement.setString(7, album);
+                statement.setString(4, recordLabel);
+                //statement.setString(5, year);
+                statement.setString(5, album);
+                statement.setString(6, songLength);
 
                 rowsInserted = statement.executeUpdate();
             }
@@ -90,16 +90,15 @@ public class DBManager
             System.out.println("Creating data...");
             try (PreparedStatement statement = connection.prepareStatement("""
                     UPDATE song
-                    SET SongTitle = ?, Artist = ?, Genre = ?, LengthOfSong = ?, PublishedYear = ?, Label = ?, Album = ?
+                    SET SongTitle = ?, ArtistName = ?, GenreName = ?,  RecordLabelName = ?, AlbumName = ?, Length = ?
                     WHERE SongTitle = ?""")) {
                 statement.setString(1, title);
                 statement.setString(2, artist);
                 statement.setString(3, genre);
-                statement.setString(4, songLength);
-                statement.setString(5, year);
-                statement.setString(6, recordLabel);
-                statement.setString(7, album);
-                statement.setString(8, oldTitle);
+                statement.setString(4, recordLabel);
+                statement.setString(5, album);
+                statement.setString(6, songLength);
+                statement.setString(7, oldTitle);
 
                 rowsUpdated = statement.executeUpdate();
             }
@@ -141,7 +140,7 @@ public class DBManager
 
             System.out.println("Reading data..");
             try(PreparedStatement statement = connection.prepareStatement("""
-                    SELECT SongTitle, Artist, Genre, LengthOfSong, PublishedYear, Label, Album
+                    SELECT SongTitle, ArtistName, GenreName, RecordLabelName, AlbumName, Length
                     FROM song
                     WHERE SongTitle LIKE ?""")){
                 statement.setString(1, songName);

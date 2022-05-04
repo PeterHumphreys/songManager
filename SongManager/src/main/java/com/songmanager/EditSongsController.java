@@ -74,10 +74,10 @@ public class EditSongsController implements Initializable
             ResultSet songInfo = dbManager.getSong(songToEdit);
             if(songInfo.next()) {
                 this.songTitle.setText(songInfo.getString("SongTitle"));
-                this.artistName.setText(songInfo.getString("Artist"));
-                this.album.setText(songInfo.getString("Album"));
-                this.genre.setText(songInfo.getString("Genre"));
-                this.recordLabel.setText(songInfo.getString("Label"));
+                this.artistName.setText(songInfo.getString("ArtistName"));
+                this.album.setText(songInfo.getString("AlbumName"));
+                this.genre.setText(songInfo.getString("GenreName"));
+                this.recordLabel.setText(songInfo.getString("RecordLabelName"));
                 //yearReleasesd
             }
         }
@@ -104,8 +104,8 @@ public class EditSongsController implements Initializable
             songTitleString = this.songTitle.getText();
             artistString = this.artistName.getText();
             genreString = this.genre.getText();
-            songLengthString = "00:01:12";
-            //songLengthString = this.hours.getText() + ":" + this.minutes.getText() + ":" + this.seconds.getText();
+            //songLengthString = "00:01:12";
+            songLengthString = this.hours.getText() + ":" + this.minutes.getText() + ":" + this.seconds.getText();
             yearString = "1999"; //this.yearReleased.getValue().toString()
             recordLabelString = this.recordLabel.getText();
             albumString = this.album.getText();
