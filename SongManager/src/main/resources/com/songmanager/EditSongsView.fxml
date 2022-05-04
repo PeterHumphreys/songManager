@@ -22,33 +22,9 @@
         <!--Song Length-->
         <Label fx:id="songLengthLabel" text="Song Length (HH:MM:SS)" style =" -fx-text-fill: #fff; -fx-font-size: 16"/>
         <HBox>
-            <Spinner fx:id="hourSpinner" prefWidth="60">
-                <valueFactory>
-                    <javafx.scene.control.SpinnerValueFactory.IntegerSpinnerValueFactory fx:id="hourValueFactory">
-                        <min>00</min>
-                        <max>23</max>
-                        <wrapAround>true</wrapAround>
-                    </javafx.scene.control.SpinnerValueFactory.IntegerSpinnerValueFactory>
-                </valueFactory>
-            </Spinner>
-            <Spinner fx:id="minuteSpinner" prefWidth="60">
-                <valueFactory>
-                    <javafx.scene.control.SpinnerValueFactory.IntegerSpinnerValueFactory fx:id="minuteValueFactory">
-                        <min>00</min>
-                        <max>59</max>
-                        <wrapAround>true</wrapAround>
-                    </javafx.scene.control.SpinnerValueFactory.IntegerSpinnerValueFactory>>
-                </valueFactory>
-            </Spinner>
-            <Spinner fx:id="secondSpinner" prefWidth="60">
-                <valueFactory>
-                    <javafx.scene.control.SpinnerValueFactory.IntegerSpinnerValueFactory fx:id="secondValueFactory">
-                        <min>00</min>
-                        <max>59</max>
-                        <wrapAround>true</wrapAround>
-                    </javafx.scene.control.SpinnerValueFactory.IntegerSpinnerValueFactory>>
-                </valueFactory>
-            </Spinner>
+            <TextField fx:id="hours" style="-fx-max-width: 375" promptText="Hours"></TextField>
+            <TextField fx:id="minutes" style="-fx-max-width: 375" promptText="Minutes"></TextField>
+            <TextField fx:id="seconds" style="-fx-max-width: 375" promptText="Seconds"></TextField>
         </HBox>
         <!--Record Label-->
         <Label fx:id="recordLabelLabel" text="Record Label" style =" -fx-text-fill: #fff; -fx-font-size: 16"/><TextField fx:id="recordLabel" style="-fx-max-width: 375"></TextField>

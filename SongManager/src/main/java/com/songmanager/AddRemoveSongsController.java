@@ -57,9 +57,9 @@ public class AddRemoveSongsController implements Initializable
 
     //Song length
     @FXML private Label songLengthLabel;
-    @FXML private Spinner hourSpinner;
-    @FXML private Spinner minuteSpinner;
-    @FXML private Spinner secondSpinner;
+    @FXML private TextField hours;
+    @FXML private TextField minutes;
+    @FXML private TextField seconds;
 
     //Record label
     @FXML private Label recordLabelLabel;
