@@ -105,6 +105,7 @@ public class EditSongsController implements Initializable
             artistString = this.artistName.getText();
             genreString = this.genre.getText();
             songLengthString = "00:01:12";
+            //songLengthString = this.hours.getText() + ":" + this.minutes.getText() + ":" + this.seconds.getText();
             yearString = "1999"; //this.yearReleased.getValue().toString()
             recordLabelString = this.recordLabel.getText();
             albumString = this.album.getText();

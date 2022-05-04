@@ -102,7 +102,7 @@ public class AddRemoveSongsController implements Initializable
            this.artistString = this.artistName.getText().toString();
            this.genreString = this.genre.getText().toString();
            //Default value for now
-           this.songLengthString = "00:03:12";
+           this.songLengthString = this.hours.getText() + ":" + this.minutes.getText() + ":" + this.seconds.getText();
            this.yearString = this.yearReleased.getValue().toString();
            this.recordLabelString = this.recordLabel.getText().toString();
            this.albumString = this.album.getText().toString();
