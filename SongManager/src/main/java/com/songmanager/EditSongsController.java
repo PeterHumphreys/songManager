@@ -87,14 +87,6 @@ public class EditSongsController implements Initializable
         }
     }
 
-
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle)
-    {
-        this.dbManager = new DBManager("jdbc:mariadb://localhost:3306/songsproject", "root", "root");
-
-    }
-
     @FXML protected void updateSongBtnClick()
     {
         if (isValidInput())
@@ -104,9 +96,8 @@ public class EditSongsController implements Initializable
             songTitleString = this.songTitle.getText();
             artistString = this.artistName.getText();
             genreString = this.genre.getText();
-            //songLengthString = "00:01:12";
             songLengthString = this.hours.getText() + ":" + this.minutes.getText() + ":" + this.seconds.getText();
-            yearString = "1999"; //this.yearReleased.getValue().toString()
+            yearString = this.yearReleased.getValue().toString();
             recordLabelString = this.recordLabel.getText();
             albumString = this.album.getText();
             dbManager.editSong(songToEdit, songTitleString, artistString, genreString, songLengthString, yearString, recordLabelString, albumString);
@@ -159,5 +150,14 @@ public class EditSongsController implements Initializable
             }
         }
         return valid;
+    }
+
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle)
+    {
+        this.dbManager = new DBManager("jdbc:mariadb://localhost:3306/songsproject", "root", "root");
+        //Add all years from start to current year to the yearReleased comboBox
+        for (int year = Integer.valueOf(Year.now().toString()); year >= 1900 ; year--)
+            this.yearReleased.getItems().add(year);
     }
 }

@@ -237,6 +237,5 @@ public class AddRemoveSongsController implements Initializable
         for (int year = Integer.valueOf(Year.now().toString()); year >= 1900 ; year--)
             this.yearReleased.getItems().add(year);
         updateLists();
-        //this.songLengthSpinner.set
     }
 }

@@ -42,7 +42,7 @@ public class DBManager
     public void createTable() throws Exception {
         try
         {
-            PreparedStatement create = connection.prepareStatement("CREATE OR REPLACE TABLE songsproject.songDetails(id int NOT NULL, SongTitle varchar(25), Artist char(25), Genre char(15), LengthOfSong varchar(4), PublishedYear varchar(4), Label varchar(20), Album varchar(20), PRIMARY KEY(SongTitle));");
+            PreparedStatement create = connection.prepareStatement("CREATE OR REPLACE TABLE songsproject.song(id int NOT NULL, SongTitle varchar(25), Artist char(25), Genre char(15), LengthOfSong varchar(4), PublishedYear varchar(4), Label varchar(20), Album varchar(20), PRIMARY KEY(SongTitle));");
             create.executeUpdate();
         }
         catch (Exception e)
@@ -55,6 +55,23 @@ public class DBManager
     //Adds a song to the db
     public void addSong(String title, String artist,  String genre, String songLength, String year, String recordLabel, String album)
     {
+        /*Check artist first
+
+        Make following SQL call
+            SELECT id FROM artist WHERE Name = artist(The string parameter)
+
+        if result is NULL/Empty, make this SQL Call
+            INSERT INTO artist VALUES(artist, recordLabel) //I assume that we can get IDs to autoincrement and not have to actually pass a value in,
+                                                           //also, probably want to check if record label exists, but not showing for simplicity
+
+        else
+            INSERT INTO song(title, id(which we retrieved from DB), genre, songLength, year, recordLabel, album)
+
+        Will have to make similar checks for other foreign keys, but the idea should still work
+
+
+         */
+
         try
         {
             int rowsInserted;
@@ -158,7 +175,7 @@ public class DBManager
     public void deleteSong(String songName)
     {
         try {
-            System.out.println("Deleteing data...");
+            System.out.println("Deleting data...");
             int rowsDeleted;
             try (PreparedStatement statement = connection.prepareStatement("""
                     DELETE FROM song
