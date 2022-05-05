@@ -37,23 +37,135 @@ public class DBManager
         return connection;
     }*/
 
-    //TODO: Check if tables are created. if not create them
-    //Creates a table in the DB
-    public void createTable() throws Exception {
-        try
-        {
-            PreparedStatement create = connection.prepareStatement("CREATE OR REPLACE TABLE songsproject.song(id int NOT NULL, SongTitle varchar(25), Artist char(25), Genre char(15), LengthOfSong varchar(4), PublishedYear varchar(4), Label varchar(20), Album varchar(20), PRIMARY KEY(SongTitle));");
-            create.executeUpdate();
+
+    private boolean find(String table, String toFind)
+    {
+        boolean found = false;
+        String tableKeyWord = "";
+        ResultSet resultSet = null;
+        switch(table) {
+            case "Genre":
+                tableKeyWord = "GenreName";
+                break;
+            case "Album":
+                tableKeyWord = "AlbumName";
+                break;
+            case "Artist":
+                tableKeyWord = "ArtistName";
+                break;
+            case "RecordLabel":
+                tableKeyWord = "RecordLabelName";
+                break;
+            case "Song":
+                tableKeyWord = "SongTitle";
+                break;
         }
-        catch (Exception e)
+        try {
+            String query = " SELECT " + tableKeyWord + " FROM " + table + " WHERE "+ tableKeyWord + " LIKE ?";
+            System.out.println("Reading data..");
+            try(PreparedStatement statement = connection.prepareStatement(query)){
+                statement.setString(1, toFind);
+                resultSet = statement.executeQuery();
+            }
+            if(resultSet.next())
+            {
+                found = true;
+            }
+        }
+        catch(Exception e)
         {
             System.out.println(e);
         }
-        finally {System.out.println("createTable function completed...");};
+        return found;
+    }
+    private int find( String toFind)
+    {
+        int found = 0;
+        String tableKeyWord = "ArtistName";
+        String table = "Artist";
+        ResultSet resultSet = null;
+        try {
+            String query = " SELECT ArtistID, " + tableKeyWord + " FROM " + table + " WHERE "+ tableKeyWord + " LIKE ?";
+            System.out.println("Reading data..");
+            try(PreparedStatement statement = connection.prepareStatement(query)){
+                statement.setString(1, toFind);
+                resultSet = statement.executeQuery();
+            }
+            if(resultSet.next())
+            {
+                found = resultSet.getInt(1);
+            }
+        }
+        catch(Exception e)
+        {
+            System.out.println(e);
+        }
+        return found;
     }
 
+    public String getArtist(int id)
+    {
+        String artist = "";
+        String tableKeyWord = "ArtistName";
+        String table = "Artist";
+        ResultSet resultSet = null;
+        try {
+            String query = " SELECT " + tableKeyWord + " FROM " + table + " WHERE "+ "ArtistID" + " LIKE ?";
+            System.out.println("Reading data..");
+            try(PreparedStatement statement = connection.prepareStatement(query)){
+                statement.setInt(1, id);
+                resultSet = statement.executeQuery();
+            }
+            if(resultSet.next())
+            {
+                artist = resultSet.getString(1);
+            }
+        }
+        catch(Exception e)
+        {
+            System.out.println(e);
+        }
+        return artist;
+    }
+
+    public ResultSet getAlbum(String album)
+    {
+        String artist = "";
+        String tableKeyWord = "AlbumName, ArtistID, Year";
+        String table = "Album";
+        ResultSet resultSet = null;
+        try {
+            String query = " SELECT " + tableKeyWord + " FROM " + table + " WHERE "+ "AlbumName" + " LIKE ?";
+            System.out.println("Reading data..");
+            try(PreparedStatement statement = connection.prepareStatement(query)){
+                statement.setString(1, album);
+                resultSet = statement.executeQuery();
+            }
+        }
+        catch(Exception e)
+        {
+            System.out.println(e);
+        }
+        return resultSet;
+    }
+
+//
+//    //Creates a table in the DB
+//    public void createTable() throws Exception {
+//        try
+//        {
+//            PreparedStatement create = connection.prepareStatement("CREATE OR REPLACE TABLE songsproject.song(id int NOT NULL, SongTitle varchar(25), Artist char(25), Genre char(15), LengthOfSong varchar(4), PublishedYear varchar(4), Label varchar(20), Album varchar(20), PRIMARY KEY(SongTitle));");
+//            create.executeUpdate();
+//        }
+//        catch (Exception e)
+//        {
+//            System.out.println(e);
+//        }
+//        finally {System.out.println("createTable function completed...");};
+//    }
+
     //Adds a song to the db
-    public void addSong(String title, String artist,  String genre, String songLength, String year, String recordLabel, String album)
+    public void addSong(String title, String artistName,  String genre, String songLength, String year, String recordLabel, String album)
     {
         /*Check artist first
 
@@ -71,16 +183,33 @@ public class DBManager
 
 
          */
-
+        if(!find("Genre", genre))
+        {
+            addGenre(genre);
+        }
+        if(!find("RecordLabel", recordLabel))
+        {
+            addRecordLabel(recordLabel);
+        }
+        if(!find("Artist", artistName))
+        {
+            addArtist(artistName, recordLabel);
+        }
+        if(!find("Album", album))
+        {
+            addAlbum(album, artistName, year);
+        }
+        int artistID = 0;
+        artistID = find(artistName);
         try
         {
             int rowsInserted;
-            System.out.println("Creating data...");
+            System.out.println("Creating Song...");
             try (PreparedStatement statement = connection.prepareStatement("""
-                    INSERT INTO song(SongTitle, ArtistName, GenreName,  RecordLabelName, AlbumName, Length)
+                    INSERT INTO song(SongTitle, ArtistID, GenreName,  RecordLabelName, AlbumName, Length)
                     VALUES (?,?,?,?,?,?)""")) {
                 statement.setString(1, title);
-                statement.setString(2, artist);
+                statement.setInt(2, artistID);
                 statement.setString(3, genre);
                 statement.setString(4, recordLabel);
                 //statement.setString(5, year);
@@ -99,18 +228,126 @@ public class DBManager
 
     }
 
+    private void addAlbum(String album, String artistName, String year) {
+        try
+        {
+            int rowsInserted;
+            int artistID = find(artistName);
+            System.out.println("Creating Album...");
+            try (PreparedStatement statement = connection.prepareStatement("""
+                    INSERT INTO album(AlbumName, ArtistID, Year)
+                    VALUES (?,?,?)""")) {
+                statement.setString(1, album);
+                statement.setInt(2, artistID);
+                statement.setString(3, year);
+
+                rowsInserted = statement.executeUpdate();
+            }
+            System.out.println("Rows inserted: " + rowsInserted);
+
+        }
+        catch (Exception e)
+        {
+            System.out.println(e);
+        }
+    }
+
+    private void addArtist(String artistName, String recordLabel) {
+        try
+        {
+            int rowsInserted;
+            System.out.println("Creating Artist...");
+            try (PreparedStatement statement = connection.prepareStatement("""
+                    INSERT INTO artist(ArtistID, ArtistName, RecordLabelName)
+                    VALUES (?,?,?)""")) {
+                statement.setNull(1, 1);
+                statement.setString(2, artistName);
+                statement.setString(3, recordLabel);
+
+                rowsInserted = statement.executeUpdate();
+            }
+            System.out.println("Rows inserted: " + rowsInserted);
+
+        }
+        catch (Exception e)
+        {
+            System.out.println(e);
+        }
+    }
+
+    private void addRecordLabel(String recordLabel) {
+        try
+        {
+            int rowsInserted;
+            System.out.println("Creating Label...");
+            try (PreparedStatement statement = connection.prepareStatement("""
+                    INSERT INTO recordlabel(RecordLabelName)
+                    VALUES (?)""")) {
+                statement.setString(1, recordLabel);
+
+                rowsInserted = statement.executeUpdate();
+            }
+            System.out.println("Rows inserted: " + rowsInserted);
+
+        }
+        catch (Exception e)
+        {
+            System.out.println(e);
+        }
+    }
+
+    private void addGenre(String genre) {
+        try
+        {
+            int rowsInserted;
+            System.out.println("Creating Genre...");
+            try (PreparedStatement statement = connection.prepareStatement("""
+                    INSERT INTO genre(GenreName)
+                    VALUES (?)""")) {
+                statement.setString(1, genre);
+
+
+                rowsInserted = statement.executeUpdate();
+            }
+            System.out.println("Rows inserted: " + rowsInserted);
+
+        }
+        catch (Exception e)
+        {
+            System.out.println(e);
+        }
+    }
+
+    //TODO: edit song actually edits the album / artist if needed instead of adding a new artist and album
     public void editSong(String oldTitle, String title, String artist,  String genre, String songLength, String year, String recordLabel, String album)
     {
+        if(!find("Genre", genre))
+        {
+            addGenre(genre);
+        }
+        if(!find("RecordLabel", recordLabel))
+        {
+            addRecordLabel(recordLabel);
+        }
+        if(!find("Artist", artist))
+        {
+            addArtist(artist, recordLabel);
+        }
+        if(!find("Album", album))
+        {
+            addAlbum(album, artist, year);
+        }
         try
         {
             int rowsUpdated;
-            System.out.println("Creating data...");
+            int artistID = find(artist);
+            System.out.println("Editing data...");
             try (PreparedStatement statement = connection.prepareStatement("""
                     UPDATE song
-                    SET SongTitle = ?, ArtistName = ?, GenreName = ?,  RecordLabelName = ?, AlbumName = ?, Length = ?
+                    SET SongTitle = ?, ArtistID = ?, GenreName = ?,  RecordLabelName = ?, AlbumName = ?, Length = ?
                     WHERE SongTitle = ?""")) {
                 statement.setString(1, title);
-                statement.setString(2, artist);
+                statement.setInt(2, artistID);
                 statement.setString(3, genre);
                 statement.setString(4, recordLabel);
                 statement.setString(5, album);
@@ -128,7 +365,7 @@ public class DBManager
         }
     }
 
-    //TODO: RETREIVE SONGS / ARTISTS / ANYTHING ELSE
+
 
     public ResultSet getSongs()
     {
@@ -157,7 +394,7 @@ public class DBManager
 
             System.out.println("Reading data..");
             try(PreparedStatement statement = connection.prepareStatement("""
-                    SELECT SongTitle, ArtistName, GenreName, RecordLabelName, AlbumName, Length
+                    SELECT SongTitle, ArtistID, GenreName, RecordLabelName, AlbumName, Length
                     FROM song
                     WHERE SongTitle LIKE ?""")){
                 statement.setString(1, songName);

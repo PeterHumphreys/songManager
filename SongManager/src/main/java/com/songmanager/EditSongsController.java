@@ -73,12 +73,15 @@ public class EditSongsController implements Initializable
         try{
             ResultSet songInfo = dbManager.getSong(songToEdit);
             if(songInfo.next()) {
+                ResultSet albumInfo = dbManager.getAlbum(songInfo.getString("AlbumName"));
                 this.songTitle.setText(songInfo.getString("SongTitle"));
-                this.artistName.setText(songInfo.getString("ArtistName"));
+                this.artistName.setText(dbManager.getArtist(songInfo.getInt("ArtistID")));
                 this.album.setText(songInfo.getString("AlbumName"));
                 this.genre.setText(songInfo.getString("GenreName"));
                 this.recordLabel.setText(songInfo.getString("RecordLabelName"));
-                //yearReleasesd
+                if(albumInfo.next()) {
+                    this.yearReleased.setValue(albumInfo.getString("Year"));
+                }
             }
         }
         catch(Exception e)
