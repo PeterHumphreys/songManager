@@ -9,12 +9,6 @@ import javafx.stage.Stage;
 import java.io.IOException;
 
 public class SongManagerMain extends Application {
-    private SongManagerController controller;
-
-    public SongManagerMain()
-    {
-        this.controller = new SongManagerController();
-    }
 
     @Override
     public void start(Stage stage) throws IOException
