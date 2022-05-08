@@ -429,7 +429,98 @@ public class DBManager
         }
 
     }
+    public ResultSet getArtist(String artist) {
+        ResultSet resultSet = null;
+        try {
 
+            System.out.println("Reading data..");
+            try (PreparedStatement statement = connection.prepareStatement("""
+                    SELECT SongTitle, Artist, GenreName, RecordLabelName, AlbumName, Length, Year
+                    FROM song
+                    WHERE Artist LIKE ?""")) {
+                statement.setString(1, artist);
+                resultSet = statement.executeQuery();
+            }
+
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        return resultSet;
+    }
+    public ResultSet getGenre(String genre) {
+        ResultSet resultSet = null;
+        try {
+
+            System.out.println("Reading data..");
+            try (PreparedStatement statement = connection.prepareStatement("""
+                    SELECT SongTitle, Artist, GenreName, RecordLabelName, AlbumName, Length, Year
+                    FROM song
+                    WHERE GenreName LIKE ?""")) {
+                statement.setString(1, genre);
+                resultSet = statement.executeQuery();
+            }
+
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        return resultSet;
+    }
+    public ResultSet getRecordLabelName(String label) {
+        ResultSet resultSet = null;
+        try {
+
+            System.out.println("Reading data..");
+            try (PreparedStatement statement = connection.prepareStatement("""
+                    SELECT SongTitle, Artist, GenreName, RecordLabelName, AlbumName, Length, Year
+                    FROM song
+                    WHERE RecordLabelName LIKE ?""")) {
+                statement.setString(1, label);
+                resultSet = statement.executeQuery();
+            }
+
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        return resultSet;
+    }
+    public ResultSet getLength(String minLength, String maxLength) {
+        ResultSet resultSet = null;
+        try {
+
+            System.out.println("Reading data..");
+            try (PreparedStatement statement = connection.prepareStatement("""
+                    SELECT SongTitle, Artist, GenreName, RecordLabelName, AlbumName, Length, Year
+                    FROM song
+                    WHERE Length >= ? AND Length <= ?""")) {
+                statement.setString(1, minLength);
+                statement.setString(2, maxLength)
+                resultSet = statement.executeQuery();
+            }
+
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        return resultSet;
+    }
+    public ResultSet getYear(String year1, String year2) {
+        ResultSet resultSet = null;
+        try {
+
+            System.out.println("Reading data..");
+            try (PreparedStatement statement = connection.prepareStatement("""
+                    SELECT SongTitle, Artist, GenreName, RecordLabelName, AlbumName, Length, Year
+                    FROM song
+                    WHERE Year >= ? AND Year <= ?""")) {
+                statement.setString(1, year1);
+                statement.setString(2, year2)
+                resultSet = statement.executeQuery();
+            }
+
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        return resultSet;
+    }
 
 
 }
