@@ -13,12 +13,18 @@
 
         <!--Song Title-->
         <Label fx:id="songTitleLabel" text="Song Title" style =" -fx-text-fill: #fff; -fx-font-size: 16"/> <TextField fx:id="songTitle" style="-fx-max-width: 375"></TextField>
+        <Label fx:id="titleError" style="-fx-text-fill:Red">dfddsf</Label>
+
         <!--Artist Name-->
         <Label fx:id="artistNameLabel" text="Artist Name" style =" -fx-text-fill: #fff; -fx-font-size: 16"/><TextField fx:id="artistName" style="-fx-max-width: 375"></TextField>
+        <Label fx:id="artistError" style="-fx-text-fill:Red"></Label>
         <!--Album Name-->
         <Label fx:id="albumLabel" text="Album" style =" -fx-text-fill: #fff; -fx-font-size: 16"/><TextField fx:id="album" style="-fx-max-width: 375"></TextField>
+        <Label fx:id="albumError" style="-fx-text-fill:Red"></Label>
+
         <!--Genre Label-->
         <Label fx:id="genreLabel" text="Genre" style =" -fx-text-fill: #fff; -fx-font-size: 16"/><TextField fx:id="genre" style="-fx-max-width: 375"></TextField>
+        <Label fx:id="genreError" style="-fx-text-fill:Red"></Label>
         <!--Song Length-->
         <Label fx:id="songLengthLabel" text="Song Length (HH:MM:SS)" style =" -fx-text-fill: #fff; -fx-font-size: 16"/>
         <HBox>
@@ -26,11 +32,15 @@
             <TextField fx:id="minutes" style="-fx-max-width: 375" promptText="Minutes"></TextField>
             <TextField fx:id="seconds" style="-fx-max-width: 375" promptText="Seconds"></TextField>
         </HBox>
+        <Label fx:id="lengthError" style="-fx-text-fill:Red"></Label>
         <!--Record Label-->
         <Label fx:id="recordLabelLabel" text="Record Label" style =" -fx-text-fill: #fff; -fx-font-size: 16"/><TextField fx:id="recordLabel" style="-fx-max-width: 375"></TextField>
+        <Label fx:id="recordLabelError" style="-fx-text-fill:Red"></Label>
         <!--Year-->
         <Label fx:id="yearReleasedLabel" text="Year Released" style =" -fx-text-fill: #fff; -fx-font-size: 16"/><ComboBox fx:id="yearReleased" style="-fx-max-width: 375"></ComboBox>
         <!--Add Song Button-->
+    <!--User feedback message-->
+        <Label fx:id="feedbackLabel" text="" style =" -fx-text-fill: #fff; -fx-font-size: 16; -fx-font-size: 16"/>
         <Button fx:id="updateSongBtn" text="Update Song" onAction="#updateSongBtnClick"  style="-fx-background-color:navy; -fx-text-fill:white; -fx-font-size: 16"/>
 
 
