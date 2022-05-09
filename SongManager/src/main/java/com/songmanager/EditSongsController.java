@@ -25,6 +25,12 @@ public class EditSongsController implements Initializable
     private String yearString;
     private String recordLabelString;
     private String albumString;
+    private boolean validTitle;
+    private boolean validArtist;
+    private boolean validGenre;
+    private boolean validRecordLabel;
+    private boolean validAlbum;
+    private boolean validLength;
 
     //Song title
     @FXML private Label songTitleLabel;
@@ -63,6 +69,15 @@ public class EditSongsController implements Initializable
     //song list header
     @FXML private Label songListHeader;
 
+    @FXML private Label titleError;
+    @FXML private Label artistError;
+    @FXML private Label albumError;
+    @FXML private Label genreError;
+    @FXML private Label lengthError;
+    @FXML private Label recordLabelError;
+
+    //User feedback message
+    @FXML private Label feedbackLabel;
 
     public void setSongToEdit(String songToEdit)
     {
@@ -108,49 +123,155 @@ public class EditSongsController implements Initializable
         }
     }
 
+    private boolean hasNulls()
+    {
+        boolean hasNulls = false;
+        //Check for empty values on columns with NOT NULL constraint
+        if (this.songTitle.getText().isEmpty())
+        {
+            this.titleError.setText("Please enter a title");
+            validTitle = false;
+            hasNulls = true;
+        }
+        else
+        {
+            this.titleError.setText("");
+        }
+        if (this.artistName.getText().isEmpty())
+        {
+            this.artistError.setText("Please enter an artist");
+            validArtist = false;
+            hasNulls = true;
+        }
+        else
+        {
+            this.artistError.setText("");
+        }
+        if (this.recordLabel.getText().isEmpty())
+        {
+            this.recordLabelError.setText("Please enter a record label");
+            validRecordLabel = false;
+            hasNulls = true;
+        }
+        else
+        {
+            this.recordLabelError.setText("");
+        }
+        if (this.album.getText().isEmpty())
+        {
+            this.albumError.setText("Please enter an album");
+            validAlbum = false;
+            hasNulls = true;
+        }
+        else
+        {
+            this.albumError.setText("");
+        }
+        if (this.genre.getText().isEmpty())
+        {
+            this.genreError.setText("Please enter an album");
+            validGenre = false;
+            hasNulls = true;
+        }
+        else
+        {
+            this.genreError.setText("");
+        }
+        return hasNulls;
+    }
+
     private boolean isValidInput()
     {
         boolean valid = true;
         //Check for empty values on columns with NOT NULL constraint
-        if (this.songTitle != null && this.artistName != null && this.genre != null && yearReleased != null)
+        if (!hasNulls())
         {
             //Check for proper data types
             //songTitle
             if (this.songTitle.getText().length() > 25)
             {
                 valid = false;
+                validTitle = false;
+                this.titleError.setText("Title must be 25 or fewer characters");
+            }
+            else
+            {
+                this.titleError.setText("");
             }
             //artistID
             if (this.artistName.getText().length() > 25)
             {
                 valid = false;
+                validArtist = false;
+                this.artistError.setText("Artist name must be 25 or fewer characters");
+            }
+            else
+            {
+                this.artistError.setText("");
             }
             //genreName
             if (this.genre.getText().length() > 15)
             {
                 valid = false;
+                validGenre = false;
+                this.genreError.setText("Genre name must be 25 or fewer characters");
+            }
+            else
+            {
+                this.genreError.setText("");
             }
             //songLength
-           /* try
+            try
             {
-                Duration songLength = new Duration()
-                if ()
+                int hoursInt, minutesInt, secondsInt;
+                hoursInt = Integer.parseInt(this.hours.getText());
+                minutesInt = Integer.parseInt(this.minutes.getText());
+                secondsInt = Integer.parseInt(this.seconds.getText());
+                if (hoursInt < 0 || minutesInt < 0 || minutesInt > 59 || secondsInt < 0 || secondsInt > 59)
+                {
+                    valid = false;
+                    validLength = false;
+                    this.lengthError.setText("Invalid length");
+                }
+                else
+                {
+                    this.lengthError.setText("");
+                }
             }
             //not a valid integer
             catch (Exception ex)
             {
-                System.out.println("Please enter a valid length!");
-            }*/
+                valid = false;
+                validLength = false;
+                this.lengthError.setText("Length values must be integers");
+            }
+
             //recordLabel
             if (this.recordLabel.getText().length() > 25)
             {
                 valid = false;
+                validRecordLabel = false;
+                this.recordLabelError.setText("Record label name must be 25 or fewer characters");
+            }
+            else
+            {
+                this.recordLabelError.setText("");
             }
             //album
             if (this.album.getText().length() > 25)
             {
                 valid = false;
+                this.album.setText("Album name must be 25 or fewer characters");
             }
+            else
+            {
+                this.albumError.setText("");
+            }
+        }
+        //Found nulls
+        else
+        {
+            valid = false;
         }
         return valid;
     }
