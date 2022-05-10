@@ -140,6 +140,7 @@ public class BrowseSongsController implements Initializable
      */
     private void clearComboBoxes()
     {
+        this.criteriaComboBox.getItems().clear();
         this.artistComboBox.getItems().clear();
         this.albumComboBox.getItems().clear();
         this.genreComboBox.getItems().clear();
