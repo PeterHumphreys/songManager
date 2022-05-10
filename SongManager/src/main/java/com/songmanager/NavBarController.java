@@ -59,7 +59,7 @@ public class NavBarController implements Initializable
 
     public void switchToAddRemoveSongsView(ActionEvent event) throws IOException
     {
-        Parent root = FXMLLoader.load(getClass().getResource("AddRemoveSongsView.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("AddSongsView.fxml"));
         stage = (Stage)((Node)event.getSource()).getScene().getWindow();
         scene = new Scene(root,1366,768);
         stage.setScene(scene);

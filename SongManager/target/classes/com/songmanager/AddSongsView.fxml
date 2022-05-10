@@ -11,17 +11,15 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.control.Spinner?>
 <?import javafx.scene.control.ListView?>
-<VBox alignment="TOP_CENTER" spacing="0" xmlns:fx="http://javafx.com/fxml"
-      fx:controller="com.songmanager.AddRemoveSongsController" style="-fx-background-color: royalblue;">
-    <fx:include source="NavBar.fxml" fx:id="navBar"></fx:include>
-
-    <Label fx:id="pageHeader" text="Modify Your Library" style =" -fx-text-fill: #fff; -fx-font-size: 36"/>
+<VBox xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.songmanager.AddSongsController"
+      prefHeight="700.0" prefWidth="700.0" style="-fx-background-color: royalblue;" spacing="0"  alignment="TOP_CENTER" >
 
     <HBox  alignment="CENTER" style="-fx-padding: 25 25 25 25; -fx-background-color: royalblue; -fx-spacing: 30">
         <!--Manually add a song-->
         <VBox style="-fx-padding: 25 25 25 25; -fx-background-color: cornflowerblue;">
             <!--Manually add a song-->
-            <Label fx:id="mainHeader" text="Manually add a song" style =" -fx-text-fill: #fff; -fx-font-size: 24"/>
+            <Label fx:id="mainHeader" text="Add a song" style =" -fx-text-fill: #fff; -fx-font-size: 24"/>
             <!--Song Title-->
             <Label fx:id="songTitleLabel" text="Song Title" style =" -fx-text-fill: #fff; -fx-font-size: 16"/> <TextField fx:id="songTitle" style="-fx-max-width: 375"></TextField>
             <Label fx:id="titleError" style="-fx-text-fill:Red"></Label>
@@ -58,22 +56,7 @@
             <Label fx:id="feedbackLabel" text="" style =" -fx-text-fill: #fff; -fx-font-size: 16; -fx-font-size: 16"/>
             <!--Add Song Button-->
             <Button fx:id="addSongBtn" text="Add Song" onAction="#AddSongBtnClick"  style="-fx-background-color:navy; -fx-text-fill:white; -fx-font-size: 16"/>
+        </VBox>
 
-        </VBox>
-        <VBox style="-fx-padding: 25 25 25 25; -fx-background-color: cornflowerblue;">
-            <Label text="Remove a song" style =" -fx-text-fill: #fff; -fx-font-size: 24"/>
-            <HBox style="-fx-padding: 10"><TextField style="-fx-max-width: 375"></TextField><Button style="-fx-background-color:navy; -fx-text-fill:white; -fx-font-size: 12">Search</Button></HBox>
-            <ListView fx:id="removeSongList" style="-fx-max-width: 375"></ListView>
-            <Label fx:id="removeError" style="-fx-text-fill: Red"></Label>
-            <Button fx:id="removeSongBtn" text="Remove Song" onAction="#RemoveSongBtnClick" style="-fx-background-color:navy; -fx-text-fill:white; -fx-font-size: 16">Remove</Button>
-        </VBox>
-        <VBox style="-fx-padding: 25 25 25 25; -fx-background-color: cornflowerblue;">
-            <Label text="Edit a song" style =" -fx-text-fill: #fff; -fx-font-size: 24"/>
-
-            <HBox style="-fx-padding: 10"><TextField style="-fx-max-width: 375"></TextField><Button style="-fx-background-color:navy; -fx-text-fill:white; -fx-font-size: 12">Search</Button></HBox>
-            <ListView fx:id="editSongList" style="-fx-max-width: 375"></ListView>
-            <Label fx:id="editError" style="-fx-text-fill: Red"></Label>
-            <Button fx:id="editSongBtn" onAction="#EditSongBtnClick" style="-fx-background-color:navy; -fx-text-fill:white; -fx-font-size: 16">Edit</Button>
-        </VBox>
     </HBox>
 </VBox>

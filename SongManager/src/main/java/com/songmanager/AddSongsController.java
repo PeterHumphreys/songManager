@@ -1,24 +1,15 @@
 package com.songmanager;
 
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.stage.WindowEvent;
 
-import java.io.IOException;
 import java.net.URL;
-import java.sql.ResultSet;
 import java.time.Year;
 import java.util.ResourceBundle;
 
-public class AddRemoveSongsController implements Initializable
+public class AddSongsController implements Initializable
 {
     private DBManager dbManager;
     private String songTitleString;
@@ -83,13 +74,6 @@ public class AddRemoveSongsController implements Initializable
     //song list header
     @FXML private Label songListHeader;
 
-    //Remove Song Vbox
-    //Remove Song ListView
-    @FXML private ListView<String> removeSongList;
-
-    //Edit Song ListView
-    @FXML private ListView<String> editSongList;
-
     //Edit Song Button
     @FXML private Button editSongBtn;
 
@@ -103,7 +87,7 @@ public class AddRemoveSongsController implements Initializable
     @FXML private Label editError;
     @FXML private Label removeError;
 
-    public AddRemoveSongsController()
+    public AddSongsController()
     {
        this.dbManager = new DBManager("jdbc:mariadb://localhost:3306/songsproject", "root", "root");
        this.validTitle = false;
@@ -117,6 +101,7 @@ public class AddRemoveSongsController implements Initializable
     {
        if (isValidInput())
        {
+           Stage stage = (Stage) addSongBtn.getScene().getWindow();
            this.songTitleString = this.songTitle.getText();
            this.artistString = this.artistName.getText().toString();
            this.genreString = this.genre.getText().toString();
@@ -128,93 +113,7 @@ public class AddRemoveSongsController implements Initializable
 
            dbManager.addSong(songTitleString, artistString, genreString, songLengthString, yearString, recordLabelString, albumString);
            feedbackLabel.setText("Added" + songTitleString);
-           updateLists();
-           clearFields();
-       }
-    }
-
-    @FXML protected void RemoveSongBtnClick()
-    {
-        String songToRemove = removeSongList.getSelectionModel().getSelectedItem();
-        if (songToRemove != null)
-        {
-            dbManager.deleteSong(songToRemove);
-            this.removeError.setText("");
-            updateLists();
-        }
-        else
-        {
-            this.removeError.setText("Please select a song to remove");
-        }
-    }
-
-    @FXML protected void EditSongBtnClick(ActionEvent event)
-    {
-        String songToEdit = editSongList.getSelectionModel().getSelectedItem();
-        if (songToEdit != null)
-        {
-            try
-            {
-                openEditSongView(event);
-                this.editError.setText("");
-            }
-            catch(IOException ex)
-            {
-                ex.printStackTrace();
-            }
-            updateLists();
-        }
-        else
-        {
-            this.editError.setText("Please select a song to edit!");
-        }
-
-    }
-
-
-    public void openEditSongView(ActionEvent event) throws IOException
-    {
-        String songToEdit = editSongList.getSelectionModel().getSelectedItem();
-
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("EditSongsView.fxml"));
-
-        Parent root = (Parent)loader.load();
-
-        EditSongsController controller = loader.<EditSongsController>getController();
-        controller.setSongToEdit(songToEdit);
-
-        Stage stage = new Stage();
-        Scene scene = new Scene(root,600,600);
-
-        stage.setScene(scene);
-        stage.initModality(Modality.APPLICATION_MODAL);
-
-        stage.show();
-        //Update lists upon closing popup
-        stage.setOnHiding(new EventHandler<WindowEvent>() {
-            @Override
-            public void handle(WindowEvent windowEvent) {
-                updateLists();
-            }
-        });
-    }
-
-    //Updates the ListViews on the page to correctly display the songs available
-    private void updateLists()
-    {
-       ResultSet resultSet = dbManager.getSongs();
-       try {
-           removeSongList.getItems().clear();
-           editSongList.getItems().clear();
-           while (resultSet.next()) {
-               String name = resultSet.getString("SongTitle");
-               removeSongList.getItems().add(name);
-               editSongList.getItems().add(name);
-           }
-       }
-       catch(Exception e)
-       {
-            System.out.println(e);
+           stage.close();
        }
     }
 
@@ -273,19 +172,6 @@ public class AddRemoveSongsController implements Initializable
             this.genreError.setText("");
        }
        return hasNulls;
-    }
-
-    private void clearFields()
-    {
-        this.songTitle.setText("");
-        this.artistName.setText("");
-        this.album.setText("");
-        this.genre.setText("");
-        this.hours.setText("");
-        this.minutes.setText("");
-        this.seconds.setText("");
-        this.recordLabel.setText("");
-        this.yearReleased.setValue(null);
     }
 
     private boolean isValidInput()
@@ -390,6 +276,5 @@ public class AddRemoveSongsController implements Initializable
         //Add all years from start to current year to the yearReleased comboBox
         for (int year = Integer.valueOf(Year.now().toString()); year >= 1900 ; year--)
             this.yearReleased.getItems().add(year);
-        updateLists();
     }
 }

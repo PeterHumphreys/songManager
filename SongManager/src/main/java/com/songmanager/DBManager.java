@@ -372,7 +372,7 @@ public class DBManager
 
             System.out.println("Reading data..");
             try(PreparedStatement statement = connection.prepareStatement("""
-                    SELECT Song.SongTitle, Song.ArtistID, Song.GenreName, Song.AlbumName, Song.AlbumName, Song.LENGTH, Album.Year , Artist.ArtistName\s
+                    SELECT Song.SongTitle, Song.ArtistID, Song.GenreName, Song.AlbumName, Song.RecordLabelName, Song.Length, Album.Year , Artist.ArtistName\s
                     FROM Song, Album, Artist
                     WHERE Album.AlbumName = Song.AlbumName AND\s
                     Song.ArtistID = Artist.ArtistID ;""")){

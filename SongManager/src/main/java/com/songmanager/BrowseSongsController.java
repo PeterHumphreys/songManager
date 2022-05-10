@@ -2,13 +2,23 @@ package com.songmanager;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
+import java.io.IOException;
 import java.net.URL;
 import java.sql.ResultSet;
 import java.time.Year;
@@ -27,6 +37,57 @@ public class BrowseSongsController implements Initializable
     //For UI, don't even remember how I made this work, but it's like magic.
     private HashMap<String, VBox> criteriaVBoxMap;
 
+    @FXML TableView<ModelTable> songTable;
+
+    @FXML TableColumn<ModelTable, String> titleCol;
+    @FXML TableColumn<ModelTable, String> artistCol;
+    @FXML TableColumn<ModelTable, String> genreCol;
+    @FXML TableColumn<ModelTable, String> recordLabelCol;
+    @FXML TableColumn<ModelTable, String> albumCol;
+    @FXML TableColumn<ModelTable, String> lengthCol;
+    @FXML TableColumn<ModelTable, String> yearCol;
+
+    @FXML ComboBox genreComboBox;
+    @FXML ComboBox artistComboBox;
+    @FXML ComboBox albumComboBox;
+    @FXML ComboBox recordLabelComboBox;
+    @FXML ComboBox criteriaComboBox;
+
+    @FXML Button addArtistBtn;
+    @FXML Button addGenreBtn;
+    @FXML Button addYearBtn;
+    @FXML Label errorMessage;
+
+    @FXML VBox criteriaBox;
+
+    @FXML VBox artistBox;
+    @FXML VBox albumBox;
+    @FXML VBox genreBox;
+    @FXML VBox yearBox;
+    @FXML VBox recordLabelBox;
+    @FXML VBox lengthOfSongBox;
+
+    @FXML ComboBox startYear;
+    @FXML ComboBox endYear;
+
+    @FXML Button selectCriteriaBtn;
+
+    @FXML Label songLengthMinLabel;
+    @FXML Label songLengthMaxLabel;
+
+    @FXML TextField secondsMin;
+    @FXML TextField minutesMin;
+    @FXML TextField hoursMin;
+
+    @FXML TextField secondsMax;
+    @FXML TextField minutesMax;
+    @FXML TextField hoursMax;
+
+    @FXML Button selectLengthBtn;
+
+    @FXML HBox buttonsBox;
+
+    ObservableList<ModelTable> objectList = FXCollections.observableArrayList();
 
     public BrowseSongsController()
     {
@@ -137,58 +198,6 @@ public class BrowseSongsController implements Initializable
         }
     }
 
-    @FXML TableView<ModelTable> songTable;
-
-    @FXML TableColumn<ModelTable, String> titleCol;
-    @FXML TableColumn<ModelTable, String> artistCol;
-    @FXML TableColumn<ModelTable, String> genreCol;
-    @FXML TableColumn<ModelTable, String> recordLabelCol;
-    @FXML TableColumn<ModelTable, String> albumCol;
-    @FXML TableColumn<ModelTable, String> lengthCol;
-    @FXML TableColumn<ModelTable, String> yearCol;
-
-    @FXML ComboBox genreComboBox;
-    @FXML ComboBox artistComboBox;
-    @FXML ComboBox albumComboBox;
-    @FXML ComboBox recordLabelComboBox;
-    @FXML ComboBox criteriaComboBox;
-
-    @FXML Button addArtistBtn;
-    @FXML Button addGenreBtn;
-    @FXML Button addYearBtn;
-    @FXML Label errorMessage;
-
-    @FXML VBox criteriaBox;
-
-    @FXML VBox artistBox;
-    @FXML VBox albumBox;
-    @FXML VBox genreBox;
-    @FXML VBox yearBox;
-    @FXML VBox recordLabelBox;
-    @FXML VBox lengthOfSongBox;
-
-    @FXML ComboBox startYear;
-    @FXML ComboBox endYear;
-
-    @FXML Button selectCriteriaBtn;
-
-    @FXML Label songLengthMinLabel;
-    @FXML Label songLengthMaxLabel;
-
-    @FXML TextField secondsMin;
-    @FXML TextField minutesMin;
-    @FXML TextField hoursMin;
-
-    @FXML TextField secondsMax;
-    @FXML TextField minutesMax;
-    @FXML TextField hoursMax;
-
-    @FXML Button selectLengthBtn;
-
-    ObservableList<ModelTable> objectList = FXCollections.observableArrayList();
-
-
-
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle)
     {
@@ -213,6 +222,9 @@ public class BrowseSongsController implements Initializable
         this.albumCol.setCellValueFactory(new PropertyValueFactory("album"));
         this.lengthCol.setCellValueFactory(new PropertyValueFactory("length"));
         this.yearCol.setCellValueFactory(new PropertyValueFactory("year"));
+        LoadTableData();
+
+        this.buttonsBox.setSpacing(10);
     }
 
     @FXML protected void selectCriteriaBtnClick()
@@ -374,6 +386,132 @@ public class BrowseSongsController implements Initializable
                 ResultSet resultSet = dbManager.getSongByYear(startYear, endYear);
                 setTable(resultSet);
             }
+        }
+    }
+
+    @FXML protected void AddSongBtnClick(ActionEvent event)
+    {
+        try
+        {
+            openAddSongView(event);
+            //this.editError.setText("");
+            LoadTableData();
+            getCriteriaData();
+            populateComboBoxes();
+        }
+        catch(IOException ex)
+        {
+            ex.printStackTrace();
+        }
+    }
+
+    //Attempts to remove a song
+    @FXML protected void RemoveSongBtnClick()
+    {
+        String songToRemove = songTable.getSelectionModel().getSelectedItem().getTitle();
+        if (songToRemove != null)
+        {
+            dbManager.deleteSong(songToRemove);
+            //this.removeError.setText("");
+            LoadTableData();
+            getCriteriaData();
+            populateComboBoxes();
+        }
+        else
+        {
+            //this.removeError.setText("Please select a song to remove");
+        }
+
+    }
+    @FXML protected void EditSongBtnClick(ActionEvent event)
+    {
+        String songToEdit = songTable.getSelectionModel().getSelectedItem().getTitle();
+        if (songToEdit != null)
+        {
+            try
+            {
+                openEditSongView(event, songToEdit);
+                //this.editError.setText("");
+            }
+            catch(IOException ex)
+            {
+                ex.printStackTrace();
+            }
+            //updateLists();
+        }
+        else
+        {
+            //this.editError.setText("Please select a song to edit!");
+        }
+    }
+
+    //Opens popup to add a song
+    public void openAddSongView(ActionEvent event) throws IOException
+    {
+
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("AddSongsView.fxml"));
+
+        Parent root = (Parent)loader.load();
+
+        AddSongsController controller = loader.<AddSongsController>getController();
+
+        Stage stage = new Stage();
+        Scene scene = new Scene(root,700,700);
+
+        stage.setScene(scene);
+        stage.initModality(Modality.APPLICATION_MODAL);
+
+        stage.show();
+        //Update lists upon closing popup
+        stage.setOnHiding(new EventHandler<WindowEvent>() {
+            @Override
+            public void handle(WindowEvent windowEvent) {
+                LoadTableData();
+                getCriteriaData();
+                populateComboBoxes();
+            }
+        });
+    }
+
+    public void openEditSongView(ActionEvent event, String songToEdit) throws IOException
+    {
+        //String songToEdit = editSongList.getSelectionModel().getSelectedItem();
+
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("EditSongsView.fxml"));
+
+        Parent root = (Parent)loader.load();
+
+        EditSongsController controller = loader.<EditSongsController>getController();
+        controller.setSongToEdit(songToEdit);
+
+        Stage stage = new Stage();
+        Scene scene = new Scene(root,700,700);
+
+        stage.setScene(scene);
+        stage.initModality(Modality.APPLICATION_MODAL);
+
+        stage.show();
+        //Update lists upon closing popup
+        stage.setOnHiding(new EventHandler<WindowEvent>() {
+            @Override
+            public void handle(WindowEvent windowEvent) {
+                LoadTableData();
+                getCriteriaData();
+                populateComboBoxes();
+            }
+        });
+    }
+    //Updates the ListViews on the page to correctly display the songs available
+    private void LoadTableData()
+    {
+        ResultSet resultSet = dbManager.getSongs();
+        try {
+            songTable.getItems().clear();
+            setTable(resultSet);
+        }
+        catch(Exception e)
+        {
+            System.out.println(e);
         }
     }
 
