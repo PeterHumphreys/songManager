@@ -448,7 +448,8 @@ Song.ArtistID = Artist.ArtistID ;
                     FROM Song, Album, Artist
                     WHERE Album.AlbumName = Song.AlbumName\s
                     AND Song.ArtistID = Artist.ArtistID\s
-                    AND Song.ArtistID = ?""")) {
+                    AND Song.ArtistID = ?
+                    ORDER BY Song.SongTitle""")) {
                 statement.setInt(1, artistID);
                 resultSet = statement.executeQuery();
             }
@@ -470,7 +471,8 @@ Song.ArtistID = Artist.ArtistID ;
                     FROM Song, Album, Artist
                     WHERE Album.AlbumName = Song.AlbumName\s
                     AND Song.ArtistID = Artist.ArtistID\s
-                    AND Song.AlbumName LIKE ?""")) {
+                    AND Song.AlbumName LIKE ?
+                    ORDER BY Song.SongTitle""")) {
                 statement.setString(1, album);
                 resultSet = statement.executeQuery();
             }
@@ -492,7 +494,8 @@ Song.ArtistID = Artist.ArtistID ;
                     FROM Song, Album, Artist
                     WHERE Album.AlbumName = Song.AlbumName\s
                     AND Song.ArtistID = Artist.ArtistID\s
-                    AND Song.GenreName LIKE ?""")) {
+                    AND Song.GenreName LIKE ?
+                    ORDER BY Song.SongTitle""")) {
                 statement.setString(1, genre);
                 resultSet = statement.executeQuery();
             }
@@ -513,7 +516,8 @@ Song.ArtistID = Artist.ArtistID ;
                     FROM Song, Album, Artist
                     WHERE Album.AlbumName = Song.AlbumName\s
                     AND Song.ArtistID = Artist.ArtistID\s
-                    AND Song.RecordLabelName LIKE ?""")) {
+                    AND Song.RecordLabelName LIKE ?
+                    ORDER BY Song.SongTitle""")) {
                 statement.setString(1, label);
                 resultSet = statement.executeQuery();
             }
@@ -535,7 +539,8 @@ Song.ArtistID = Artist.ArtistID ;
                     FROM Song, Album, Artist
                     WHERE Album.AlbumName = Song.AlbumName\s
                     AND Song.ArtistID = Artist.ArtistID\s
-                    AND Song.Length >= ? AND Song.Length <= ?""")) {
+                    AND Song.Length >= ? AND Song.Length <= ?
+                    ORDER BY Song.Length""")) {
                 statement.setString(1, minLength);
                 statement.setString(2, maxLength);
                 resultSet = statement.executeQuery();
@@ -558,7 +563,8 @@ Song.ArtistID = Artist.ArtistID ;
                     FROM Song, Album, Artist
                     WHERE Album.AlbumName = Song.AlbumName\s
                     AND Song.ArtistID = Artist.ArtistID\s
-                    AND Album.Year >= ? AND Album.Year <= ?""")) {
+                    AND Album.Year >= ? AND Album.Year <= ?
+                    ORDER BY Album.Year;""")) {
                 statement.setString(1, year1);
                 statement.setString(2, year2);
                 resultSet = statement.executeQuery();
@@ -577,6 +583,7 @@ Song.ArtistID = Artist.ArtistID ;
             try (PreparedStatement statement = connection.prepareStatement("""
                     SELECT ArtistName
                     FROM Artist
+                    ORDER BY ArtistName
                     """)) {
                 resultSet = statement.executeQuery();
             }
@@ -595,6 +602,7 @@ Song.ArtistID = Artist.ArtistID ;
             try (PreparedStatement statement = connection.prepareStatement("""
                     SELECT AlbumName
                     FROM Album
+                    ORDER BY AlbumName
                     """)) {
                 resultSet = statement.executeQuery();
             }
@@ -613,6 +621,7 @@ Song.ArtistID = Artist.ArtistID ;
             try (PreparedStatement statement = connection.prepareStatement("""
                     SELECT RecordLabelName
                     FROM RecordLabel
+                    ORDER BY RecordLabelName
                     """)) {
                 resultSet = statement.executeQuery();
             }
@@ -631,6 +640,7 @@ Song.ArtistID = Artist.ArtistID ;
             try (PreparedStatement statement = connection.prepareStatement("""
                     SELECT GenreName
                     FROM Genre
+                    ORDER BY GenreName
                     """)) {
                 resultSet = statement.executeQuery();
             }
