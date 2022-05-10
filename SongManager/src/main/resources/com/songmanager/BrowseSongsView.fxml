@@ -11,8 +11,8 @@
 
     <VBox  alignment="CENTER" style="-fx-background-color: royalblue;" maxWidth="1000">
 
-        <Label fx:id="errorMessage" style="-fx-text-fill: Red; -fx-font-size: 16; -fx-padding: 10 0 0 0"></Label>
         <VBox style="-fx-padding: 25 25 25 25; -fx-background-color: cornflowerblue; -fx-max-width: 1000 ">
+            <Label fx:id="errorMessage" style="-fx-text-fill: #FF0000; -fx-font-size: 24; -fx-padding: 10 0 0 0"></Label>
             <HBox style="-fx-padding: 0 0 25 0">
                 <!--Criteria selector-->
                 <VBox>

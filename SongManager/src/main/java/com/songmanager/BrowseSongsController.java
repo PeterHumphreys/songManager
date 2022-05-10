@@ -468,6 +468,10 @@ public class BrowseSongsController implements Initializable
 
                 errorMessage.setText("");
             }
+            else
+            {
+                errorMessage.setText("Start year must be before end year!");
+            }
         }
         else
         {
