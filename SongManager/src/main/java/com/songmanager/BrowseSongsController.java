@@ -212,7 +212,7 @@ public class BrowseSongsController implements Initializable
         this.recordLabelCol.setCellValueFactory(new PropertyValueFactory("recordLabel"));
         this.albumCol.setCellValueFactory(new PropertyValueFactory("album"));
         this.lengthCol.setCellValueFactory(new PropertyValueFactory("length"));
-        //this.yearCol.setCellValueFactory(new PropertyValueFactory("year"));
+        this.yearCol.setCellValueFactory(new PropertyValueFactory("year"));
     }
 
     @FXML protected void selectCriteriaBtnClick()
@@ -277,9 +277,10 @@ public class BrowseSongsController implements Initializable
             this.songTable.getItems().clear();
             while (resultSet.next())
             {
-                objectList.add(new ModelTable(resultSet.getString("SongTitle"), resultSet.getString("ArtistID"),
+                objectList.add(new ModelTable(resultSet.getString("SongTitle"), resultSet.getString("ArtistName"),
                         resultSet.getString("GenreName"), resultSet.getString("RecordLabelName"),
-                        resultSet.getString("AlbumName"), resultSet.getString("Length")));
+                        resultSet.getString("AlbumName"), resultSet.getString("Length"),
+                        resultSet.getString("Year")));
             }
         }
         catch(Exception e)

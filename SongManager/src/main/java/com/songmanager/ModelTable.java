@@ -2,16 +2,16 @@ package com.songmanager;
 
 public class ModelTable
 {
-    String title, artist, genre, recordLabel, album, length;
+    String title, artist, genre, recordLabel, album, length, year;
 
-    public ModelTable(String title, String artist, String genre, String recordLabel, String album, String length) {
+    public ModelTable(String title, String artist, String genre, String recordLabel, String album, String length, String year) {
         this.title = title;
         this.artist = artist;
         this.genre = genre;
         this.recordLabel = recordLabel;
         this.album = album;
         this.length = length;
-        //this.year = year;
+        this.year = year;
     }
 
     public String getTitle() {
@@ -62,11 +62,11 @@ public class ModelTable
         this.length = length;
     }
 
-//    public String getYear() {
-//        return year;
-//    }
-//
-//    public void setYear(String year) {
-//        this.year = year;
-//    }
+    public String getYear() {
+        return year;
+    }
+
+    public void setYear(String year) {
+        this.year = year;
+    }
 }

@@ -106,7 +106,7 @@
             <Label>Songs</Label>
             <TableView fx:id="songTable" style="-fx-max-width: 750; -fx-pref-width: 750">
                 <columns>
-                    <TableColumn prefWidth="100" text="Title" fx:id="titleCol"></TableColumn>
+                    <TableColumn text="Title" fx:id="titleCol"></TableColumn>
                     <TableColumn text="Artist" fx:id="artistCol"></TableColumn>
                     <TableColumn text="Genre" fx:id="genreCol"></TableColumn>
                     <TableColumn text="Record Label" fx:id="recordLabelCol"></TableColumn>

@@ -372,8 +372,10 @@ public class DBManager
 
             System.out.println("Reading data..");
             try(PreparedStatement statement = connection.prepareStatement("""
-                    SELECT SongTitle
-                    FROM song""")){
+                    SELECT Song.SongTitle, Song.ArtistID, Song.GenreName, Song.AlbumName, Song.AlbumName, Song.LENGTH, Album.Year , Artist.ArtistName\s
+                    FROM Song, Album, Artist
+                    WHERE Album.AlbumName = Song.AlbumName AND\s
+                    Song.ArtistID = Artist.ArtistID ;""")){
                 resultSet = statement.executeQuery();
             }
 
@@ -427,6 +429,13 @@ public class DBManager
         }
 
     }
+    /*
+    SELECT Song.SongTitle, Song.ArtistID, Song.GenreName, Song.AlbumName, Song.AlbumName, Song.LENGTH, Album.Year , Artist.ArtistName
+FROM Song, Album, Artist
+WHERE Album.AlbumName = Song.AlbumName AND
+Song.ArtistID = Artist.ArtistID ;
+     */
+    //Gets a song view by the artist
     public ResultSet getSongByArtist(String artistName) {
         ResultSet resultSet = null;
         try {
@@ -434,9 +443,12 @@ public class DBManager
             int artistID = find(artistName);
             System.out.println("Reading data..");
             try (PreparedStatement statement = connection.prepareStatement("""
-                    SELECT SongTitle, ArtistID, GenreName, RecordLabelName, AlbumName, Length
-                    FROM song
-                    WHERE ArtistID LIKE ?""")) {
+                    SELECT Song.SongTitle, Song.ArtistID, Song.GenreName, Song.AlbumName, Song.RecordLabelName, 
+                    Song.AlbumName, Song.LENGTH, Album.Year , Artist.ArtistName\s
+                    FROM Song, Album, Artist
+                    WHERE Album.AlbumName = Song.AlbumName\s
+                    AND Song.ArtistID = Artist.ArtistID\s
+                    AND Song.ArtistID = ?""")) {
                 statement.setInt(1, artistID);
                 resultSet = statement.executeQuery();
             }
@@ -453,9 +465,12 @@ public class DBManager
 
             System.out.println("Reading data..");
             try (PreparedStatement statement = connection.prepareStatement("""
-                    SELECT SongTitle, ArtistID, GenreName, RecordLabelName, AlbumName, Length
-                    FROM song
-                    WHERE AlbumName LIKE ?""")) {
+                    SELECT Song.SongTitle, Song.ArtistID, Song.GenreName, Song.AlbumName, Song.RecordLabelName, 
+                    Song.AlbumName, Song.LENGTH, Album.Year , Artist.ArtistName\s
+                    FROM Song, Album, Artist
+                    WHERE Album.AlbumName = Song.AlbumName\s
+                    AND Song.ArtistID = Artist.ArtistID\s
+                    AND Song.AlbumName LIKE ?""")) {
                 statement.setString(1, album);
                 resultSet = statement.executeQuery();
             }
@@ -472,9 +487,12 @@ public class DBManager
 
             System.out.println("Reading data..");
             try (PreparedStatement statement = connection.prepareStatement("""
-                    SELECT SongTitle, ArtistID, GenreName, RecordLabelName, AlbumName, Length
-                    FROM song
-                    WHERE GenreName LIKE ?""")) {
+                    SELECT Song.SongTitle, Song.ArtistID, Song.GenreName, Song.AlbumName, Song.RecordLabelName, 
+                    Song.AlbumName, Song.LENGTH, Album.Year , Artist.ArtistName\s
+                    FROM Song, Album, Artist
+                    WHERE Album.AlbumName = Song.AlbumName\s
+                    AND Song.ArtistID = Artist.ArtistID\s
+                    AND Song.GenreName LIKE ?""")) {
                 statement.setString(1, genre);
                 resultSet = statement.executeQuery();
             }
@@ -490,9 +508,12 @@ public class DBManager
 
             System.out.println("Reading data..");
             try (PreparedStatement statement = connection.prepareStatement("""
-                    SELECT SongTitle, ArtistID, GenreName, RecordLabelName, AlbumName, Length
-                    FROM song
-                    WHERE RecordLabelName LIKE ?""")) {
+                    SELECT Song.SongTitle, Song.ArtistID, Song.GenreName, Song.AlbumName, Song.RecordLabelName, 
+                    Song.AlbumName, Song.LENGTH, Album.Year , Artist.ArtistName\s
+                    FROM Song, Album, Artist
+                    WHERE Album.AlbumName = Song.AlbumName\s
+                    AND Song.ArtistID = Artist.ArtistID\s
+                    AND Song.RecordLabelName LIKE ?""")) {
                 statement.setString(1, label);
                 resultSet = statement.executeQuery();
             }
@@ -509,9 +530,12 @@ public class DBManager
 
             System.out.println("Reading data..");
             try (PreparedStatement statement = connection.prepareStatement("""
-                    SELECT SongTitle, ArtistID, GenreName, RecordLabelName, AlbumName, Length
-                    FROM song
-                    WHERE Length >= ? AND Length <= ?""")) {
+                    SELECT Song.SongTitle, Song.ArtistID, Song.GenreName, Song.AlbumName, Song.RecordLabelName, 
+                    Song.AlbumName, Song.LENGTH, Album.Year , Artist.ArtistName\s
+                    FROM Song, Album, Artist
+                    WHERE Album.AlbumName = Song.AlbumName\s
+                    AND Song.ArtistID = Artist.ArtistID\s
+                    AND Song.Length >= ? AND Song.Length <= ?""")) {
                 statement.setString(1, minLength);
                 statement.setString(2, maxLength);
                 resultSet = statement.executeQuery();
@@ -529,9 +553,12 @@ public class DBManager
 
             System.out.println("Reading data..");
             try (PreparedStatement statement = connection.prepareStatement("""
-                    SELECT SongTitle, ArtistID, GenreName, RecordLabelName, AlbumName, Length
-                    FROM song
-                    WHERE Year >= ? AND Year <= ?""")) {
+                    SELECT Song.SongTitle, Song.ArtistID, Song.GenreName, Song.AlbumName, Song.RecordLabelName, 
+                    Song.AlbumName, Song.LENGTH, Album.Year , Artist.ArtistName\s
+                    FROM Song, Album, Artist
+                    WHERE Album.AlbumName = Song.AlbumName\s
+                    AND Song.ArtistID = Artist.ArtistID\s
+                    AND Album.Year >= ? AND Album.Year <= ?""")) {
                 statement.setString(1, year1);
                 statement.setString(2, year2);
                 resultSet = statement.executeQuery();
