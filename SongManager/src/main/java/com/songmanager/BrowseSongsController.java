@@ -1,9 +1,12 @@
 package com.songmanager;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.VBox;
 
 import java.net.URL;
@@ -134,11 +137,15 @@ public class BrowseSongsController implements Initializable
         }
     }
 
+    @FXML TableView<ModelTable> songTable;
 
-    /*@FXML ListView artistCriteriaList;
-    @FXML ListView genreCriteriaList;
-    @FXML ListView yearCriteriaList;*/
-    @FXML ListView songList;
+    @FXML TableColumn<ModelTable, String> titleCol;
+    @FXML TableColumn<ModelTable, String> artistCol;
+    @FXML TableColumn<ModelTable, String> genreCol;
+    @FXML TableColumn<ModelTable, String> recordLabelCol;
+    @FXML TableColumn<ModelTable, String> albumCol;
+    @FXML TableColumn<ModelTable, String> lengthCol;
+    @FXML TableColumn<ModelTable, String> yearCol;
 
     @FXML ComboBox genreComboBox;
     @FXML ComboBox artistComboBox;
@@ -178,6 +185,8 @@ public class BrowseSongsController implements Initializable
 
     @FXML Button selectLengthBtn;
 
+    ObservableList<ModelTable> objectList = FXCollections.observableArrayList();
+
 
 
     @Override
@@ -193,9 +202,17 @@ public class BrowseSongsController implements Initializable
         for (int i =criteriaBox.getChildren().size() - 1; i>= 0; i--)
         {
             criteriaBox.getChildren().remove(i);
-
         }
+        this.songTable.setPrefWidth(500);
         populateComboBoxes();
+
+        this.titleCol.setCellValueFactory(new PropertyValueFactory("title"));
+        this.artistCol.setCellValueFactory(new PropertyValueFactory("artist"));
+        this.genreCol.setCellValueFactory(new PropertyValueFactory("genre"));
+        this.recordLabelCol.setCellValueFactory(new PropertyValueFactory("recordLabel"));
+        this.albumCol.setCellValueFactory(new PropertyValueFactory("album"));
+        this.lengthCol.setCellValueFactory(new PropertyValueFactory("length"));
+        //this.yearCol.setCellValueFactory(new PropertyValueFactory("year"));
     }
 
     @FXML protected void selectCriteriaBtnClick()
@@ -253,26 +270,32 @@ public class BrowseSongsController implements Initializable
         }
     }
 
+    private void setTable(ResultSet resultSet)
+    {
+        try
+        {
+            this.songTable.getItems().clear();
+            while (resultSet.next())
+            {
+                objectList.add(new ModelTable(resultSet.getString("SongTitle"), resultSet.getString("ArtistID"),
+                        resultSet.getString("GenreName"), resultSet.getString("RecordLabelName"),
+                        resultSet.getString("AlbumName"), resultSet.getString("Length")));
+            }
+        }
+        catch(Exception e)
+        {
+            System.out.println(e);
+        }
+        songTable.setItems(objectList);
+    }
+
     @FXML protected void selectArtistBtnClick()
     {
-        if (this.artistComboBox.getValue() != null)
+       if (this.artistComboBox.getValue() != null)
         {
             String artist = artistComboBox.getValue().toString();
             ResultSet resultSet = dbManager.getSongByArtist(artist);
-            try
-            {
-                this.songList.getItems().clear();
-                while (resultSet.next())
-                {
-                    String song = resultSet.getString("SongTitle");
-                    System.out.println(song);
-                    this.songList.getItems().add(song);
-                }
-            }
-            catch(Exception e)
-            {
-                System.out.println(e);
-            }
+            setTable(resultSet);
         }
     }
 
@@ -282,21 +305,7 @@ public class BrowseSongsController implements Initializable
         {
             String album = albumComboBox.getValue().toString();
             ResultSet resultSet = dbManager.getSongByAlbum(album);
-            //Get all albums
-            try
-            {
-                this.songList.getItems().clear();
-                while (resultSet.next())
-                {
-                    String song = resultSet.getString("SongTitle");
-                    System.out.println(song);
-                    this.songList.getItems().add(song);
-                }
-            }
-            catch(Exception e)
-            {
-                System.out.println(e);
-            }
+            setTable(resultSet);
         }
     }
 
@@ -306,44 +315,15 @@ public class BrowseSongsController implements Initializable
         {
             String genre = genreComboBox.getValue().toString();
             ResultSet resultSet = dbManager.getSongByGenre(genre);
-
-            try
-            {
-                this.songList.getItems().clear();
-                while (resultSet.next())
-                {
-                    String song = resultSet.getString("SongTitle");
-                    System.out.println(song);
-                    this.songList.getItems().add(song);
-                }
-            }
-            catch(Exception e)
-            {
-                System.out.println(e);
-            }
+            setTable(resultSet);
         }
     }
     @FXML protected void selectRecordLabelBtnClick()
     {
-        if (this.recordLabelComboBox.getValue() != null)
-        {
+        if (this.recordLabelComboBox.getValue() != null) {
             String recordLabel = recordLabelComboBox.getValue().toString();
             ResultSet resultSet = dbManager.getSongByRecordLabel(recordLabel);
-
-            try
-            {
-                this.songList.getItems().clear();
-                while (resultSet.next())
-                {
-                    String song = resultSet.getString("SongTitle");
-                    System.out.println(song);
-                    this.songList.getItems().add(song);
-                }
-            }
-            catch(Exception e)
-            {
-                System.out.println(e);
-            }
+            setTable(resultSet);
         }
     }
     @FXML protected void selectLengthBtnClick()
@@ -367,28 +347,13 @@ public class BrowseSongsController implements Initializable
                     minLength = getTimeAsFormattedString(minHours, minMinutes, minSeconds);
                     maxLength = getTimeAsFormattedString(maxHours, maxMinutes, maxSeconds);
                     ResultSet resultSet = dbManager.getSongByLength(minLength, maxLength);
-                    try
-                    {
-                        this.songList.getItems().clear();
-                        while (resultSet.next())
-                        {
-                            String song = resultSet.getString("SongTitle");
-                            System.out.println(song);
-                            this.songList.getItems().add(song);
-                        }
-                    }
-                    catch(Exception e)
-                    {
-                        System.out.println(e);
-                    }
+                    setTable(resultSet);
                 }
             }
             catch(Exception ex)
             {
                 ex.printStackTrace();
             }
-
-
         }
     }
     @FXML protected void selectYearBtnClick()
@@ -406,23 +371,8 @@ public class BrowseSongsController implements Initializable
                 endYear = this.endYear.getValue().toString();
 
                 ResultSet resultSet = dbManager.getSongByYear(startYear, endYear);
-                try
-                {
-                    this.songList.getItems().clear();
-                    while (resultSet.next())
-                    {
-                        String song = resultSet.getString("SongTitle");
-                        System.out.println(song);
-                        this.songList.getItems().add(song);
-                    }
-                }
-                catch(Exception e)
-                {
-                    System.out.println(e);
-                }
-
+                setTable(resultSet);
             }
-
         }
     }
 

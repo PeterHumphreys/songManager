@@ -16,7 +16,7 @@
     <VBox  alignment="CENTER" style="-fx-background-color: royalblue;" maxWidth="750">
 
         <Label fx:id="errorMessage" style="-fx-text-fill: #fff; -fx-font-size: 16; -fx-padding: 10 0 0 0"></Label>
-        <VBox style="-fx-padding: 25 25 25 25; -fx-background-color: cornflowerblue;">
+        <VBox style="-fx-padding: 25 25 25 25; -fx-background-color: cornflowerblue; -fx-max-width: 700">
             <HBox style="-fx-padding: 0 0 25 0">
                 <!--Criteria selector-->
                 <VBox>
@@ -81,30 +81,40 @@
                             <VBox style="-fx-padding: 0 10 0 0">
                                 <Label fx:id="songLengthMinLabel" text="Min Length (HH:MM:SS)" style =" -fx-text-fill: #fff; -fx-font-size: 16"/>
                                 <HBox>
-                                    <TextField fx:id="hoursMin" style="-fx-max-width: 75" promptText="Hours"></TextField>
-                                    <TextField fx:id="minutesMin" style="-fx-max-width: 75" promptText="Minutes"></TextField>
-                                    <TextField fx:id="secondsMin" style="-fx-max-width: 75" promptText="Seconds"></TextField>
+                                    <TextField fx:id="hoursMin" style="-fx-max-width: 40" promptText="H"></TextField>
+                                    <TextField fx:id="minutesMin" style="-fx-max-width: 40" promptText="M"></TextField>
+                                    <TextField fx:id="secondsMin" style="-fx-max-width: 40" promptText="S"></TextField>
                                 </HBox>
                             </VBox>
                             <VBox>
                                 <Label fx:id="songLengthMaxLabel" text="Max Length (HH:MM:SS)" style =" -fx-text-fill: #fff; -fx-font-size: 16"/>
                                 <HBox>
-                                    <TextField fx:id="hoursMax" style="-fx-max-width: 75" promptText="Hours"></TextField>
-                                    <TextField fx:id="minutesMax" style="-fx-max-width: 75" promptText="Minutes"></TextField>
-                                    <TextField fx:id="secondsMax" style="-fx-max-width: 75" promptText="Seconds"></TextField>
+                                    <TextField fx:id="hoursMax" style="-fx-max-width: 40" promptText="H"></TextField>
+                                    <TextField fx:id="minutesMax" style="-fx-max-width: 40" promptText="M"></TextField>
+                                    <TextField fx:id="secondsMax" style="-fx-max-width: 40" promptText="S"></TextField>
                                 </HBox>
                             </VBox>
+                            <VBox>
+                                <Label> </Label>
+                                <Button style="-fx-background-color:navy; -fx-text-fill:white; -fx-font-size: 12;" fx:id="selectLengthBtn" onAction="#selectLengthBtnClick">Filter</Button>
+                            </VBox>
                         </HBox>
-                        <VBox>
-                            <Label> </Label>
-                            <Button style="-fx-background-color:navy; -fx-text-fill:white; -fx-font-size: 12;" fx:id="selectLengthBtn" onAction="#selectLengthBtnClick">Filter</Button>
-                        </VBox>
                     </VBox>
                 </VBox>
             </HBox>
 
             <Label>Songs</Label>
-            <ListView fx:id="songList" style="-fx-max-width: 375"></ListView>
+            <TableView fx:id="songTable" style="-fx-max-width: 750; -fx-pref-width: 750">
+                <columns>
+                    <TableColumn prefWidth="100" text="Title" fx:id="titleCol"></TableColumn>
+                    <TableColumn text="Artist" fx:id="artistCol"></TableColumn>
+                    <TableColumn text="Genre" fx:id="genreCol"></TableColumn>
+                    <TableColumn text="Record Label" fx:id="recordLabelCol"></TableColumn>
+                    <TableColumn text="Album" fx:id="albumCol"></TableColumn>
+                    <TableColumn text="Length" fx:id="lengthCol"></TableColumn>
+                    <TableColumn text="Year" fx:id="yearCol"></TableColumn>
+                </columns>
+            </TableView>
         </VBox>
     </VBox>
 </VBox>
