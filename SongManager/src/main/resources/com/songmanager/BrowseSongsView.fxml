@@ -98,7 +98,7 @@
                             <VBox>
                                 <Label> </Label>
                                 <Button style="-fx-background-color:navy; -fx-text-fill:white; -fx-font-size: 12;" fx:id="filterByLengthBtn"
-                                        onAction="#selectLengthBtnClick">Filter</Button>
+                                        onAction="#filterByLengthBtnClick">Filter</Button>
                             </VBox>
                         </HBox>
                     </VBox>

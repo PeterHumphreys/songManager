@@ -92,11 +92,6 @@ public class BrowseSongsController implements Initializable
     public BrowseSongsController()
     {
         this.dbManager = new DBManager("jdbc:mariadb://localhost:3306/songsproject", "root", "root");
-        this.artistList = new ArrayList<String>();
-        this.albumList = new ArrayList<String>();
-        this.genreList = new ArrayList<String>();
-        this.recordLabelList = new ArrayList<String>();
-
         getCriteriaData();
 
         //For UI
@@ -105,6 +100,7 @@ public class BrowseSongsController implements Initializable
 
     public void populateComboBoxes()
     {
+        clearComboBoxes();
         for (String artist : this.artistList)
             artistComboBox.getItems().add(artist);
 
@@ -131,11 +127,26 @@ public class BrowseSongsController implements Initializable
 
         this.criteriaComboBox.getItems().add("Year");
         this.criteriaComboBox.getItems().add("Length of Song");
-
     }
 
+    public void clearComboBoxes()
+    {
+        this.artistComboBox.getItems().clear();
+        this.albumComboBox.getItems().clear();
+        this.genreComboBox.getItems().clear();
+        this.recordLabelComboBox.getItems().clear();
+    }
+
+    /**
+     * Loads criteria data
+     */
     public void getCriteriaData()
     {
+        this.artistList = new ArrayList<String>();
+        this.albumList = new ArrayList<String>();
+        this.genreList = new ArrayList<String>();
+        this.recordLabelList = new ArrayList<String>();
+
         //Get data from database
         ResultSet resultSet = dbManager.getAllArtistNames();
         //Get all artists
@@ -198,6 +209,9 @@ public class BrowseSongsController implements Initializable
         }
     }
 
+    /**
+     * Initializes JavaFX components
+     */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle)
     {
@@ -227,6 +241,9 @@ public class BrowseSongsController implements Initializable
         this.buttonsBox.setSpacing(10);
     }
 
+    /**
+     * Populates the songTable
+     */
     private void setTable(ResultSet resultSet)
     {
         try
@@ -247,6 +264,9 @@ public class BrowseSongsController implements Initializable
         songTable.setItems(objectList);
     }
 
+    /**
+     * Attempts to select a criteria to filter by
+     */
     @FXML protected void selectCriteriaBtnClick()
     {
         if (criteriaComboBox.getValue() != null)
@@ -307,8 +327,9 @@ public class BrowseSongsController implements Initializable
         }
     }
 
-
-
+    /**
+     * Attempts to filter by artist
+     */
     @FXML protected void filterByArtistBtnClick()
     {
        if (this.artistComboBox.getValue() != null)
@@ -324,6 +345,9 @@ public class BrowseSongsController implements Initializable
        }
     }
 
+    /**
+     * Attempts to filter by album
+     */
     @FXML protected void filterByAlbumBtnClick()
     {
         if (this.albumComboBox.getValue() != null)
@@ -339,6 +363,9 @@ public class BrowseSongsController implements Initializable
         }
     }
 
+    /**
+     * Attempts to filter by genre
+     */
     @FXML protected void filterByGenreBtnClick()
     {
         if (this.genreComboBox.getValue() != null)
@@ -353,6 +380,10 @@ public class BrowseSongsController implements Initializable
             errorMessage.setText("Select a genre!");
         }
     }
+
+    /**
+     * Attempts to filter by record label
+     */
     @FXML protected void filterByRecordLabelBtnClick()
     {
         if (this.recordLabelComboBox.getValue() != null) {
@@ -366,7 +397,11 @@ public class BrowseSongsController implements Initializable
             errorMessage.setText("Select an record label!");
         }
     }
-    @FXML protected void selectLengthBtnClick()
+
+    /**
+     * Attempts to filter by song length
+     */
+    @FXML protected void filterByLengthBtnClick()
     {
         if (this.hoursMin.getText() != null && this.minutesMin.getText() != null && this.secondsMin.getText() != null &&
                 this.hoursMax.getText() != null && this.minutesMax.getText() != null && this.secondsMax.getText() != null)
@@ -403,7 +438,7 @@ public class BrowseSongsController implements Initializable
     }
 
     /**
-     * Select
+     * Attempts to filter by year
      */
     @FXML protected void filterByYearBtnClick()
     {
