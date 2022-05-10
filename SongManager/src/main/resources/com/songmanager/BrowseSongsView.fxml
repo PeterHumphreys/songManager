@@ -33,7 +33,15 @@
                         <Label>Artist</Label>
                         <HBox>
                             <ComboBox fx:id="artistComboBox"></ComboBox>
-                            <Button style="-fx-background-color:navy; -fx-text-fill:white; -fx-font-size: 12;" fx:id="addArtistBtn" onAction="#addArtistBtnClick">Select</Button>
+                            <Button style="-fx-background-color:navy; -fx-text-fill:white; -fx-font-size: 12;" fx:id="addArtistBtn" onAction="#selectArtistBtnClick">Select</Button>
+                        </HBox>
+                    </VBox>
+
+                    <VBox fx:id="albumBox">
+                        <Label>Album</Label>
+                        <HBox>
+                            <ComboBox fx:id="albumComboBox"></ComboBox>
+                            <Button style="-fx-background-color:navy; -fx-text-fill:white; -fx-font-size: 12;" fx:id="addAlbumBtn" onAction="#selectAlbumBtnClick">Select</Button>
                         </HBox>
                     </VBox>
 
@@ -41,7 +49,7 @@
                         <Label>Genre</Label>
                         <HBox>
                             <ComboBox fx:id="genreComboBox"></ComboBox>
-                            <Button style="-fx-background-color:navy; -fx-text-fill:white; -fx-font-size: 12;" fx:id="addGenreBtn" onAction="#addGenreBtnClick">Select</Button>
+                            <Button style="-fx-background-color:navy; -fx-text-fill:white; -fx-font-size: 12;" fx:id="addGenreBtn" onAction="#selectGenreBtnClick">Select</Button>
                         </HBox>
                     </VBox>
 
@@ -55,7 +63,7 @@
                             </VBox>
                             <VBox>
                                 <Label> </Label>
-                                <Button style="-fx-background-color:navy; -fx-text-fill:white; -fx-font-size: 12;" fx:id="addYearBtn" onAction="#addGenreBtnClick">Select</Button>
+                                <Button style="-fx-background-color:navy; -fx-text-fill:white; -fx-font-size: 12;" fx:id="addYearBtn" onAction="#selectYearBtnClick">Select</Button>
                             </VBox>
                         </HBox>
                     </VBox>
@@ -63,7 +71,8 @@
                     <VBox fx:id="recordLabelBox">
                         <Label>Record Label</Label>
                         <HBox>
-                            <ComboBox fx:id="recordLabelComboBox"></ComboBox><Button style="-fx-background-color:navy; -fx-text-fill:white; -fx-font-size: 12">Select</Button>
+                            <ComboBox fx:id="recordLabelComboBox"></ComboBox>
+                            <Button style="-fx-background-color:navy; -fx-text-fill:white; -fx-font-size: 12;" fx:id="selectRecordLabelBtn" onAction="#selectRecordLabelBtnClick">Select</Button>
                         </HBox>
                     </VBox>
 
@@ -77,7 +86,7 @@
                             </VBox>
                             <VBox>
                                 <Label> </Label>
-                                <Button style="-fx-background-color:navy; -fx-text-fill:white; -fx-font-size: 12;" fx:id="lengthOfSongBtn" onAction="#addGenreBtnClick">Select</Button>
+                                <Button style="-fx-background-color:navy; -fx-text-fill:white; -fx-font-size: 12;" fx:id="lengthOfSongBtn" onAction="#selectLengthBtnClick">Select</Button>
                             </VBox>
                         </HBox>
                     </VBox>

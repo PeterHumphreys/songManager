@@ -13,7 +13,7 @@
 
         <!--Song Title-->
         <Label fx:id="songTitleLabel" text="Song Title" style =" -fx-text-fill: #fff; -fx-font-size: 16"/> <TextField fx:id="songTitle" style="-fx-max-width: 375"></TextField>
-        <Label fx:id="titleError" style="-fx-text-fill:Red">dfddsf</Label>
+        <Label fx:id="titleError" style="-fx-text-fill:Red"></Label>
 
         <!--Artist Name-->
         <Label fx:id="artistNameLabel" text="Artist Name" style =" -fx-text-fill: #fff; -fx-font-size: 16"/><TextField fx:id="artistName" style="-fx-max-width: 375"></TextField>

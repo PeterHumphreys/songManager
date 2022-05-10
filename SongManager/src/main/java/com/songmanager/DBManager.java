@@ -365,8 +365,6 @@ public class DBManager
         }
     }
 
-
-
     public ResultSet getSongs()
     {
         ResultSet resultSet = null;
@@ -429,16 +427,17 @@ public class DBManager
         }
 
     }
-    public ResultSet getArtist(String artist) {
+    public ResultSet getSongByArtist(String artistName) {
         ResultSet resultSet = null;
         try {
 
+            int artistID = find(artistName);
             System.out.println("Reading data..");
             try (PreparedStatement statement = connection.prepareStatement("""
-                    SELECT SongTitle, Artist, GenreName, RecordLabelName, AlbumName, Length, Year
+                    SELECT SongTitle, ArtistID, GenreName, RecordLabelName, AlbumName, Length
                     FROM song
-                    WHERE Artist LIKE ?""")) {
-                statement.setString(1, artist);
+                    WHERE ArtistID LIKE ?""")) {
+                statement.setInt(1, artistID);
                 resultSet = statement.executeQuery();
             }
 
@@ -447,13 +446,33 @@ public class DBManager
         }
         return resultSet;
     }
-    public ResultSet getGenre(String genre) {
+
+    public ResultSet getSongByAlbum(String album) {
         ResultSet resultSet = null;
         try {
 
             System.out.println("Reading data..");
             try (PreparedStatement statement = connection.prepareStatement("""
-                    SELECT SongTitle, Artist, GenreName, RecordLabelName, AlbumName, Length, Year
+                    SELECT SongTitle, ArtistID, GenreName, RecordLabelName, AlbumName, Length
+                    FROM song
+                    WHERE AlbumName LIKE ?""")) {
+                statement.setString(1, album);
+                resultSet = statement.executeQuery();
+            }
+
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        return resultSet;
+    }
+
+    public ResultSet getSongByGenre(String genre) {
+        ResultSet resultSet = null;
+        try {
+
+            System.out.println("Reading data..");
+            try (PreparedStatement statement = connection.prepareStatement("""
+                    SELECT SongTitle, ArtistID, GenreName, RecordLabelName, AlbumName, Length
                     FROM song
                     WHERE GenreName LIKE ?""")) {
                 statement.setString(1, genre);
@@ -465,13 +484,13 @@ public class DBManager
         }
         return resultSet;
     }
-    public ResultSet getRecordLabelName(String label) {
+    public ResultSet getSongByRecordLabel(String label) {
         ResultSet resultSet = null;
         try {
 
             System.out.println("Reading data..");
             try (PreparedStatement statement = connection.prepareStatement("""
-                    SELECT SongTitle, Artist, GenreName, RecordLabelName, AlbumName, Length, Year
+                    SELECT SongTitle, ArtistID, GenreName, RecordLabelName, AlbumName, Length
                     FROM song
                     WHERE RecordLabelName LIKE ?""")) {
                 statement.setString(1, label);
@@ -483,17 +502,18 @@ public class DBManager
         }
         return resultSet;
     }
-    public ResultSet getLength(String minLength, String maxLength) {
+
+    public ResultSet getSongByLength(String minLength, String maxLength) {
         ResultSet resultSet = null;
         try {
 
             System.out.println("Reading data..");
             try (PreparedStatement statement = connection.prepareStatement("""
-                    SELECT SongTitle, Artist, GenreName, RecordLabelName, AlbumName, Length, Year
+                    SELECT SongTitle, ArtistID, GenreName, RecordLabelName, AlbumName, Length
                     FROM song
                     WHERE Length >= ? AND Length <= ?""")) {
                 statement.setString(1, minLength);
-                statement.setString(2, maxLength)
+                statement.setString(2, maxLength);
                 resultSet = statement.executeQuery();
             }
 
@@ -502,17 +522,89 @@ public class DBManager
         }
         return resultSet;
     }
-    public ResultSet getYear(String year1, String year2) {
+
+    public ResultSet getSongByYear(String year1, String year2) {
         ResultSet resultSet = null;
         try {
 
             System.out.println("Reading data..");
             try (PreparedStatement statement = connection.prepareStatement("""
-                    SELECT SongTitle, Artist, GenreName, RecordLabelName, AlbumName, Length, Year
+                    SELECT SongTitle, ArtistID, GenreName, RecordLabelName, AlbumName, Length
                     FROM song
                     WHERE Year >= ? AND Year <= ?""")) {
                 statement.setString(1, year1);
-                statement.setString(2, year2)
+                statement.setString(2, year2);
+                resultSet = statement.executeQuery();
+            }
+
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        return resultSet;
+    }
+
+    public ResultSet getAllArtistNames() {
+        ResultSet resultSet = null;
+        try {
+            System.out.println("Reading data..");
+            try (PreparedStatement statement = connection.prepareStatement("""
+                    SELECT ArtistName
+                    FROM Artist
+                    """)) {
+                resultSet = statement.executeQuery();
+            }
+
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        return resultSet;
+    }
+
+    public ResultSet getAllAlbumNames() {
+        ResultSet resultSet = null;
+        try {
+
+            System.out.println("Reading data..");
+            try (PreparedStatement statement = connection.prepareStatement("""
+                    SELECT AlbumName
+                    FROM Album
+                    """)) {
+                resultSet = statement.executeQuery();
+            }
+
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        return resultSet;
+    }
+
+    public ResultSet getAllRecordLabelNames() {
+        ResultSet resultSet = null;
+        try {
+
+            System.out.println("Reading data..");
+            try (PreparedStatement statement = connection.prepareStatement("""
+                    SELECT RecordLabelName
+                    FROM RecordLabel
+                    """)) {
+                resultSet = statement.executeQuery();
+            }
+
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        return resultSet;
+    }
+
+    public ResultSet getAllGenreNames() {
+        ResultSet resultSet = null;
+        try {
+
+            System.out.println("Reading data..");
+            try (PreparedStatement statement = connection.prepareStatement("""
+                    SELECT GenreName
+                    FROM Genre
+                    """)) {
                 resultSet = statement.executeQuery();
             }
 

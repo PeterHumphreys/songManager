@@ -117,7 +117,7 @@ public class AddRemoveSongsController implements Initializable
     {
        if (isValidInput())
        {
-           this.songTitleString = this.songTitle.getText().toString();
+           this.songTitleString = this.songTitle.getText();
            this.artistString = this.artistName.getText().toString();
            this.genreString = this.genre.getText().toString();
            //Default value for now
