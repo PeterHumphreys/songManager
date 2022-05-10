@@ -53,9 +53,9 @@ public class BrowseSongsController implements Initializable
     @FXML ComboBox recordLabelComboBox;
     @FXML ComboBox criteriaComboBox;
 
-    @FXML Button addArtistBtn;
-    @FXML Button addGenreBtn;
-    @FXML Button addYearBtn;
+    @FXML Button filterByArtistBtn;
+    @FXML Button filterByGenreBtn;
+    @FXML Button filterByYearBtn;
     @FXML Label errorMessage;
 
     @FXML VBox criteriaBox;
@@ -83,7 +83,7 @@ public class BrowseSongsController implements Initializable
     @FXML TextField minutesMax;
     @FXML TextField hoursMax;
 
-    @FXML Button selectLengthBtn;
+    @FXML Button filterByLengthBtn;
 
     @FXML HBox buttonsBox;
 
@@ -227,6 +227,26 @@ public class BrowseSongsController implements Initializable
         this.buttonsBox.setSpacing(10);
     }
 
+    private void setTable(ResultSet resultSet)
+    {
+        try
+        {
+            this.songTable.getItems().clear();
+            while (resultSet.next())
+            {
+                objectList.add(new ModelTable(resultSet.getString("SongTitle"), resultSet.getString("ArtistName"),
+                        resultSet.getString("GenreName"), resultSet.getString("RecordLabelName"),
+                        resultSet.getString("AlbumName"), resultSet.getString("Length"),
+                        resultSet.getString("Year")));
+            }
+        }
+        catch(Exception e)
+        {
+            System.out.println(e);
+        }
+        songTable.setItems(objectList);
+    }
+
     @FXML protected void selectCriteriaBtnClick()
     {
         if (criteriaComboBox.getValue() != null)
@@ -279,64 +299,71 @@ public class BrowseSongsController implements Initializable
                 }
                 criteriaBox.getChildren().add(criteriaVBoxMap.get("lengthOfSongBox"));
             }
+            errorMessage.setText("");
+        }
+        else
+        {
+            errorMessage.setText("Select a filter criteria!");
         }
     }
 
-    private void setTable(ResultSet resultSet)
-    {
-        try
-        {
-            this.songTable.getItems().clear();
-            while (resultSet.next())
-            {
-                objectList.add(new ModelTable(resultSet.getString("SongTitle"), resultSet.getString("ArtistName"),
-                        resultSet.getString("GenreName"), resultSet.getString("RecordLabelName"),
-                        resultSet.getString("AlbumName"), resultSet.getString("Length"),
-                        resultSet.getString("Year")));
-            }
-        }
-        catch(Exception e)
-        {
-            System.out.println(e);
-        }
-        songTable.setItems(objectList);
-    }
 
-    @FXML protected void selectArtistBtnClick()
+
+    @FXML protected void filterByArtistBtnClick()
     {
        if (this.artistComboBox.getValue() != null)
         {
             String artist = artistComboBox.getValue().toString();
             ResultSet resultSet = dbManager.getSongByArtist(artist);
             setTable(resultSet);
+            errorMessage.setText("");
         }
+       else
+       {
+           errorMessage.setText("Select an artist!");
+       }
     }
 
-    @FXML protected void selectAlbumBtnClick()
+    @FXML protected void filterByAlbumBtnClick()
     {
         if (this.albumComboBox.getValue() != null)
         {
             String album = albumComboBox.getValue().toString();
             ResultSet resultSet = dbManager.getSongByAlbum(album);
             setTable(resultSet);
+            errorMessage.setText("");
+        }
+        else
+        {
+            errorMessage.setText("Select an album!");
         }
     }
 
-    @FXML protected void selectGenreBtnClick()
+    @FXML protected void filterByGenreBtnClick()
     {
         if (this.genreComboBox.getValue() != null)
         {
             String genre = genreComboBox.getValue().toString();
             ResultSet resultSet = dbManager.getSongByGenre(genre);
             setTable(resultSet);
+            errorMessage.setText("");
+        }
+        else
+        {
+            errorMessage.setText("Select a genre!");
         }
     }
-    @FXML protected void selectRecordLabelBtnClick()
+    @FXML protected void filterByRecordLabelBtnClick()
     {
         if (this.recordLabelComboBox.getValue() != null) {
             String recordLabel = recordLabelComboBox.getValue().toString();
             ResultSet resultSet = dbManager.getSongByRecordLabel(recordLabel);
             setTable(resultSet);
+            errorMessage.setText("");
+        }
+        else
+        {
+            errorMessage.setText("Select an record label!");
         }
     }
     @FXML protected void selectLengthBtnClick()
@@ -361,15 +388,24 @@ public class BrowseSongsController implements Initializable
                     maxLength = getTimeAsFormattedString(maxHours, maxMinutes, maxSeconds);
                     ResultSet resultSet = dbManager.getSongByLength(minLength, maxLength);
                     setTable(resultSet);
+                    errorMessage.setText("");
+                }
+                else
+                {
+                    errorMessage.setText("Enter a valid time!");
                 }
             }
             catch(Exception ex)
             {
-                ex.printStackTrace();
+                errorMessage.setText("Enter a valid time!");
             }
         }
     }
-    @FXML protected void selectYearBtnClick()
+
+    /**
+     * Select
+     */
+    @FXML protected void filterByYearBtnClick()
     {
         //No nulls
         if (this.startYear.getValue() != null && this.endYear.getValue() != null)
@@ -385,16 +421,25 @@ public class BrowseSongsController implements Initializable
 
                 ResultSet resultSet = dbManager.getSongByYear(startYear, endYear);
                 setTable(resultSet);
+
+                errorMessage.setText("");
             }
+        }
+        else
+        {
+            errorMessage.setText("Select a year!");
         }
     }
 
+    /**
+     * Attempts to add a song
+     */
     @FXML protected void AddSongBtnClick(ActionEvent event)
     {
         try
         {
             openAddSongView(event);
-            //this.editError.setText("");
+            errorMessage.setText("");
             LoadTableData();
             getCriteriaData();
             populateComboBoxes();
@@ -405,47 +450,54 @@ public class BrowseSongsController implements Initializable
         }
     }
 
-    //Attempts to remove a song
+    /**
+     * Attempts to add remove a song
+     */
     @FXML protected void RemoveSongBtnClick()
     {
-        String songToRemove = songTable.getSelectionModel().getSelectedItem().getTitle();
-        if (songToRemove != null)
+        if (songTable.getSelectionModel().getSelectedItem() != null)
         {
+            String songToRemove = songTable.getSelectionModel().getSelectedItem().getTitle();
             dbManager.deleteSong(songToRemove);
-            //this.removeError.setText("");
+            this.errorMessage.setText("");
             LoadTableData();
             getCriteriaData();
             populateComboBoxes();
         }
         else
         {
-            //this.removeError.setText("Please select a song to remove");
+            this.errorMessage.setText("Please pick a song to remove");
         }
 
     }
+
+    /**
+     * Attempts to edit a song
+     */
     @FXML protected void EditSongBtnClick(ActionEvent event)
     {
-        String songToEdit = songTable.getSelectionModel().getSelectedItem().getTitle();
-        if (songToEdit != null)
+        if (songTable.getSelectionModel().getSelectedItem() != null)
         {
+            String songToEdit = songTable.getSelectionModel().getSelectedItem().getTitle();
             try
             {
                 openEditSongView(event, songToEdit);
-                //this.editError.setText("");
+                this.errorMessage.setText("");
             }
             catch(IOException ex)
             {
                 ex.printStackTrace();
             }
-            //updateLists();
         }
         else
         {
-            //this.editError.setText("Please select a song to edit!");
+            this.errorMessage.setText("Please pick a song to edit");
         }
     }
 
-    //Opens popup to add a song
+    /**
+     * Opens popup to add a song
+     */
     public void openAddSongView(ActionEvent event) throws IOException
     {
 
@@ -473,6 +525,9 @@ public class BrowseSongsController implements Initializable
         });
     }
 
+    /**
+     * Opens popup to edit a song
+     */
     public void openEditSongView(ActionEvent event, String songToEdit) throws IOException
     {
         //String songToEdit = editSongList.getSelectionModel().getSelectedItem();
@@ -501,7 +556,10 @@ public class BrowseSongsController implements Initializable
             }
         });
     }
-    //Updates the ListViews on the page to correctly display the songs available
+
+    /**
+     * Updates the ListViews on the page to correctly display the songs available
+     */
     private void LoadTableData()
     {
         ResultSet resultSet = dbManager.getSongs();
@@ -515,6 +573,9 @@ public class BrowseSongsController implements Initializable
         }
     }
 
+    /**
+     * Checks that times inputted are valid
+     */
     public boolean validTimes(String hours, String minutes, String seconds) throws Exception
     {
         if (Integer.parseInt(hours) < 0 || Integer.parseInt(minutes) < 0 ||
@@ -526,6 +587,9 @@ public class BrowseSongsController implements Initializable
         return true;
     }
 
+    /**
+     * Converts hour, minute, second time strings to a single string that can be used for an SQL command
+     */
     public String getTimeAsFormattedString(String hours, String minutes, String seconds)
     {
         return hours + ":" + minutes + ":" + seconds;

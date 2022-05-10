@@ -11,7 +11,7 @@
 
     <VBox  alignment="CENTER" style="-fx-background-color: royalblue;" maxWidth="1000">
 
-        <Label fx:id="errorMessage" style="-fx-text-fill: #fff; -fx-font-size: 16; -fx-padding: 10 0 0 0"></Label>
+        <Label fx:id="errorMessage" style="-fx-text-fill: Red; -fx-font-size: 16; -fx-padding: 10 0 0 0"></Label>
         <VBox style="-fx-padding: 25 25 25 25; -fx-background-color: cornflowerblue; -fx-max-width: 1000 ">
             <HBox style="-fx-padding: 0 0 25 0">
                 <!--Criteria selector-->
@@ -29,7 +29,8 @@
                         <Label>Artist</Label>
                         <HBox>
                             <ComboBox fx:id="artistComboBox"></ComboBox>
-                            <Button style="-fx-background-color:navy; -fx-text-fill:white; -fx-font-size: 12;" fx:id="addArtistBtn" onAction="#selectArtistBtnClick">Filter</Button>
+                            <Button style="-fx-background-color:navy; -fx-text-fill:white; -fx-font-size: 12;" fx:id="filterByArtistBtn"
+                                    onAction="#filterByArtistBtnClick">Filter</Button>
                         </HBox>
                     </VBox>
 
@@ -37,7 +38,8 @@
                         <Label>Album</Label>
                         <HBox>
                             <ComboBox fx:id="albumComboBox"></ComboBox>
-                            <Button style="-fx-background-color:navy; -fx-text-fill:white; -fx-font-size: 12;" fx:id="addAlbumBtn" onAction="#selectAlbumBtnClick">Filter</Button>
+                            <Button style="-fx-background-color:navy; -fx-text-fill:white; -fx-font-size: 12;" fx:id="filterByAlbumBtn"
+                                    onAction="#filterByAlbumBtnClick">Filter</Button>
                         </HBox>
                     </VBox>
 
@@ -45,7 +47,8 @@
                         <Label>Genre</Label>
                         <HBox>
                             <ComboBox fx:id="genreComboBox"></ComboBox>
-                            <Button style="-fx-background-color:navy; -fx-text-fill:white; -fx-font-size: 12;" fx:id="addGenreBtn" onAction="#selectGenreBtnClick">Filter</Button>
+                            <Button style="-fx-background-color:navy; -fx-text-fill:white; -fx-font-size: 12;" fx:id="filterByGenreBtn"
+                                    onAction="#filterByGenreBtnClick">Filter</Button>
                         </HBox>
                     </VBox>
 
@@ -59,7 +62,8 @@
                             </VBox>
                             <VBox>
                                 <Label> </Label>
-                                <Button style="-fx-background-color:navy; -fx-text-fill:white; -fx-font-size: 12;" fx:id="addYearBtn" onAction="#selectYearBtnClick">Filter</Button>
+                                <Button style="-fx-background-color:navy; -fx-text-fill:white; -fx-font-size: 12;" fx:id="filterByYearBtn"
+                                        onAction="#filterByYearBtnClick">Filter</Button>
                             </VBox>
                         </HBox>
                     </VBox>
@@ -68,7 +72,8 @@
                         <Label>Record Label</Label>
                         <HBox>
                             <ComboBox fx:id="recordLabelComboBox"></ComboBox>
-                            <Button style="-fx-background-color:navy; -fx-text-fill:white; -fx-font-size: 12;" fx:id="selectRecordLabelBtn" onAction="#selectRecordLabelBtnClick">Filter</Button>
+                            <Button style="-fx-background-color:navy; -fx-text-fill:white; -fx-font-size: 12;" fx:id="filterByRecordLabelBtn"
+                                    onAction="#filterByRecordLabelBtnClick">Filter</Button>
                         </HBox>
                     </VBox>
 
@@ -92,7 +97,8 @@
                             </VBox>
                             <VBox>
                                 <Label> </Label>
-                                <Button style="-fx-background-color:navy; -fx-text-fill:white; -fx-font-size: 12;" fx:id="selectLengthBtn" onAction="#selectLengthBtnClick">Filter</Button>
+                                <Button style="-fx-background-color:navy; -fx-text-fill:white; -fx-font-size: 12;" fx:id="filterByLengthBtn"
+                                        onAction="#selectLengthBtnClick">Filter</Button>
                             </VBox>
                         </HBox>
                     </VBox>
