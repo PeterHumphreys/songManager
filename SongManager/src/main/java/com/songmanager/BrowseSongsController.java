@@ -89,6 +89,9 @@ public class BrowseSongsController implements Initializable
 
     ObservableList<ModelTable> objectList = FXCollections.observableArrayList();
 
+    /**
+     * Default constructor
+     */
     public BrowseSongsController()
     {
         this.dbManager = new DBManager("jdbc:mariadb://localhost:3306/songsproject", "root", "root");
@@ -98,6 +101,9 @@ public class BrowseSongsController implements Initializable
         this.criteriaVBoxMap = new HashMap<String, VBox>();
     }
 
+    /**
+     * Fills combo boxes with criteria data
+     */
     public void populateComboBoxes()
     {
         clearComboBoxes();
@@ -129,7 +135,10 @@ public class BrowseSongsController implements Initializable
         this.criteriaComboBox.getItems().add("Length of Song");
     }
 
-    public void clearComboBoxes()
+    /**
+     * Removes items from all criteria combo boxes
+     */
+    private void clearComboBoxes()
     {
         this.artistComboBox.getItems().clear();
         this.albumComboBox.getItems().clear();
@@ -140,7 +149,7 @@ public class BrowseSongsController implements Initializable
     /**
      * Loads criteria data
      */
-    public void getCriteriaData()
+    private void getCriteriaData()
     {
         this.artistList = new ArrayList<String>();
         this.albumList = new ArrayList<String>();
@@ -236,7 +245,7 @@ public class BrowseSongsController implements Initializable
         this.albumCol.setCellValueFactory(new PropertyValueFactory("album"));
         this.lengthCol.setCellValueFactory(new PropertyValueFactory("length"));
         this.yearCol.setCellValueFactory(new PropertyValueFactory("year"));
-        LoadTableData();
+        LoadAllTableData();
 
         this.buttonsBox.setSpacing(10);
     }
@@ -475,7 +484,7 @@ public class BrowseSongsController implements Initializable
         {
             openAddSongView(event);
             errorMessage.setText("");
-            LoadTableData();
+            LoadAllTableData();
             getCriteriaData();
             populateComboBoxes();
         }
@@ -495,7 +504,7 @@ public class BrowseSongsController implements Initializable
             String songToRemove = songTable.getSelectionModel().getSelectedItem().getTitle();
             dbManager.deleteSong(songToRemove);
             this.errorMessage.setText("");
-            LoadTableData();
+            LoadAllTableData();
             getCriteriaData();
             populateComboBoxes();
         }
@@ -549,11 +558,12 @@ public class BrowseSongsController implements Initializable
         stage.initModality(Modality.APPLICATION_MODAL);
 
         stage.show();
-        //Update lists upon closing popup
+
+        //Update table upon closing popup
         stage.setOnHiding(new EventHandler<WindowEvent>() {
             @Override
             public void handle(WindowEvent windowEvent) {
-                LoadTableData();
+                LoadAllTableData();
                 getCriteriaData();
                 populateComboBoxes();
             }
@@ -581,11 +591,12 @@ public class BrowseSongsController implements Initializable
         stage.initModality(Modality.APPLICATION_MODAL);
 
         stage.show();
-        //Update lists upon closing popup
+
+        //Update table upon closing popup
         stage.setOnHiding(new EventHandler<WindowEvent>() {
             @Override
             public void handle(WindowEvent windowEvent) {
-                LoadTableData();
+                LoadAllTableData();
                 getCriteriaData();
                 populateComboBoxes();
             }
@@ -593,9 +604,9 @@ public class BrowseSongsController implements Initializable
     }
 
     /**
-     * Updates the ListViews on the page to correctly display the songs available
+     * Updates the Table on the page to correctly display the songs available
      */
-    private void LoadTableData()
+    private void LoadAllTableData()
     {
         ResultSet resultSet = dbManager.getSongs();
         try {
@@ -604,6 +615,19 @@ public class BrowseSongsController implements Initializable
         }
         catch(Exception e)
         {
+            System.out.println(e);
+        }
+    }
+
+    /**
+     * Updates the Table on the page to correctly display the songs available,
+     * used to return to previous filtered view of table
+     */
+    private void LoadSpecificTableData(ResultSet resultSet) {
+        try {
+            songTable.getItems().clear();
+            setTable(resultSet);
+        } catch (Exception e) {
             System.out.println(e);
         }
     }
