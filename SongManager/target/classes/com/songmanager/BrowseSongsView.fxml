@@ -33,7 +33,7 @@
                         <Label>Artist</Label>
                         <HBox>
                             <ComboBox fx:id="artistComboBox"></ComboBox>
-                            <Button style="-fx-background-color:navy; -fx-text-fill:white; -fx-font-size: 12;" fx:id="addArtistBtn" onAction="#selectArtistBtnClick">Select</Button>
+                            <Button style="-fx-background-color:navy; -fx-text-fill:white; -fx-font-size: 12;" fx:id="addArtistBtn" onAction="#selectArtistBtnClick">Filter</Button>
                         </HBox>
                     </VBox>
 
@@ -41,7 +41,7 @@
                         <Label>Album</Label>
                         <HBox>
                             <ComboBox fx:id="albumComboBox"></ComboBox>
-                            <Button style="-fx-background-color:navy; -fx-text-fill:white; -fx-font-size: 12;" fx:id="addAlbumBtn" onAction="#selectAlbumBtnClick">Select</Button>
+                            <Button style="-fx-background-color:navy; -fx-text-fill:white; -fx-font-size: 12;" fx:id="addAlbumBtn" onAction="#selectAlbumBtnClick">Filter</Button>
                         </HBox>
                     </VBox>
 
@@ -49,7 +49,7 @@
                         <Label>Genre</Label>
                         <HBox>
                             <ComboBox fx:id="genreComboBox"></ComboBox>
-                            <Button style="-fx-background-color:navy; -fx-text-fill:white; -fx-font-size: 12;" fx:id="addGenreBtn" onAction="#selectGenreBtnClick">Select</Button>
+                            <Button style="-fx-background-color:navy; -fx-text-fill:white; -fx-font-size: 12;" fx:id="addGenreBtn" onAction="#selectGenreBtnClick">Filter</Button>
                         </HBox>
                     </VBox>
 
@@ -63,7 +63,7 @@
                             </VBox>
                             <VBox>
                                 <Label> </Label>
-                                <Button style="-fx-background-color:navy; -fx-text-fill:white; -fx-font-size: 12;" fx:id="addYearBtn" onAction="#selectYearBtnClick">Select</Button>
+                                <Button style="-fx-background-color:navy; -fx-text-fill:white; -fx-font-size: 12;" fx:id="addYearBtn" onAction="#selectYearBtnClick">Filter</Button>
                             </VBox>
                         </HBox>
                     </VBox>
@@ -72,28 +72,36 @@
                         <Label>Record Label</Label>
                         <HBox>
                             <ComboBox fx:id="recordLabelComboBox"></ComboBox>
-                            <Button style="-fx-background-color:navy; -fx-text-fill:white; -fx-font-size: 12;" fx:id="selectRecordLabelBtn" onAction="#selectRecordLabelBtnClick">Select</Button>
+                            <Button style="-fx-background-color:navy; -fx-text-fill:white; -fx-font-size: 12;" fx:id="selectRecordLabelBtn" onAction="#selectRecordLabelBtnClick">Filter</Button>
                         </HBox>
                     </VBox>
 
                     <VBox fx:id="lengthOfSongBox">
                         <HBox>
                             <VBox style="-fx-padding: 0 10 0 0">
-                                <Label>Min Length</Label><ComboBox fx:id="songLengthLowerLimit"></ComboBox>
+                                <Label fx:id="songLengthMinLabel" text="Min Length (HH:MM:SS)" style =" -fx-text-fill: #fff; -fx-font-size: 16"/>
+                                <HBox>
+                                    <TextField fx:id="hoursMin" style="-fx-max-width: 75" promptText="Hours"></TextField>
+                                    <TextField fx:id="minutesMin" style="-fx-max-width: 75" promptText="Minutes"></TextField>
+                                    <TextField fx:id="secondsMin" style="-fx-max-width: 75" promptText="Seconds"></TextField>
+                                </HBox>
                             </VBox>
                             <VBox>
-                                <Label>Max Length</Label><ComboBox fx:id="songLengthUpperLimit"></ComboBox>
-                            </VBox>
-                            <VBox>
-                                <Label> </Label>
-                                <Button style="-fx-background-color:navy; -fx-text-fill:white; -fx-font-size: 12;" fx:id="lengthOfSongBtn" onAction="#selectLengthBtnClick">Select</Button>
+                                <Label fx:id="songLengthMaxLabel" text="Max Length (HH:MM:SS)" style =" -fx-text-fill: #fff; -fx-font-size: 16"/>
+                                <HBox>
+                                    <TextField fx:id="hoursMax" style="-fx-max-width: 75" promptText="Hours"></TextField>
+                                    <TextField fx:id="minutesMax" style="-fx-max-width: 75" promptText="Minutes"></TextField>
+                                    <TextField fx:id="secondsMax" style="-fx-max-width: 75" promptText="Seconds"></TextField>
+                                </HBox>
                             </VBox>
                         </HBox>
+                        <VBox>
+                            <Label> </Label>
+                            <Button style="-fx-background-color:navy; -fx-text-fill:white; -fx-font-size: 12;" fx:id="selectLengthBtn" onAction="#selectLengthBtnClick">Filter</Button>
+                        </VBox>
                     </VBox>
                 </VBox>
             </HBox>
-
-            <Button fx:id ="filterSongsBtn" style="-fx-background-color:navy; -fx-text-fill:white; -fx-font-size: 16; -fx-spacing: 10;">Filter Songs</Button>
 
             <Label>Songs</Label>
             <ListView fx:id="songList" style="-fx-max-width: 375"></ListView>

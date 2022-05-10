@@ -24,6 +24,7 @@ public class BrowseSongsController implements Initializable
     //For UI, don't even remember how I made this work, but it's like magic.
     private HashMap<String, VBox> criteriaVBoxMap;
 
+
     public BrowseSongsController()
     {
         this.dbManager = new DBManager("jdbc:mariadb://localhost:3306/songsproject", "root", "root");
@@ -52,6 +53,13 @@ public class BrowseSongsController implements Initializable
         for (String recordLabel : this.recordLabelList)
             recordLabelComboBox.getItems().add(recordLabel);
 
+        //Add all years from start to current year to the yearReleased comboBox
+        for (int year = Integer.valueOf(Year.now().toString()); year >= 1900 ; year--)
+        {
+            this.startYear.getItems().add(year);
+            this.endYear.getItems().add(year);
+        }
+
         this.criteriaComboBox.getItems().add("Artist");
         this.criteriaComboBox.getItems().add("Album");
         this.criteriaComboBox.getItems().add("Genre");
@@ -60,12 +68,6 @@ public class BrowseSongsController implements Initializable
         this.criteriaComboBox.getItems().add("Year");
         this.criteriaComboBox.getItems().add("Length of Song");
 
-        for (int year = Integer.valueOf(Year.now().toString()); year >= 1900 ; year--)
-        {
-            this.startYear.getItems().add(year);
-            this.endYear.getItems().add(year);
-        }
-        //Populate songs list using DBManager
     }
 
     public void getCriteriaData()
@@ -143,10 +145,7 @@ public class BrowseSongsController implements Initializable
     @FXML ComboBox albumComboBox;
     @FXML ComboBox recordLabelComboBox;
     @FXML ComboBox criteriaComboBox;
-    @FXML ComboBox startYear;
-    @FXML ComboBox endYear;
 
-    @FXML Button filterSongsBtn;
     @FXML Button addArtistBtn;
     @FXML Button addGenreBtn;
     @FXML Button addYearBtn;
@@ -161,14 +160,24 @@ public class BrowseSongsController implements Initializable
     @FXML VBox recordLabelBox;
     @FXML VBox lengthOfSongBox;
 
-    @FXML ComboBox songLengthLowerLimit;
-    @FXML ComboBox songLengthUpperLimit;
+    @FXML ComboBox startYear;
+    @FXML ComboBox endYear;
 
     @FXML Button selectCriteriaBtn;
 
-    @FXML CheckBox yearCheckBox;
-    @FXML CheckBox artistCheckBox;
-    @FXML CheckBox albumCheckBox;
+    @FXML Label songLengthMinLabel;
+    @FXML Label songLengthMaxLabel;
+
+    @FXML TextField secondsMin;
+    @FXML TextField minutesMin;
+    @FXML TextField hoursMin;
+
+    @FXML TextField secondsMax;
+    @FXML TextField minutesMax;
+    @FXML TextField hoursMax;
+
+    @FXML Button selectLengthBtn;
+
 
 
     @Override
@@ -187,9 +196,6 @@ public class BrowseSongsController implements Initializable
 
         }
         populateComboBoxes();
-        /*criteriaBox.getChildren().remove(2);
-        criteriaBox.getChildren().remove(1);
-        criteriaBox.getChildren().remove(0);*/
 
 
     }
@@ -344,33 +350,73 @@ public class BrowseSongsController implements Initializable
     }
     @FXML protected void selectLengthBtnClick()
     {
-        if (this.songLengthLowerLimit.getValue() != null && this.songLengthUpperLimit.getValue() != null)
+        if (this.hoursMin.getText() != null && this.minutesMin.getText() != null && this.secondsMin.getText() != null &&
+                this.hoursMax.getText() != null && this.minutesMax.getText() != null && this.secondsMax.getText() != null)
         {
-            String minLength = songLengthLowerLimit.getValue().toString();
-            String maxLength = songLengthUpperLimit.getValue().toString();
+            String minHours, minMinutes, minSeconds, maxHours, maxMinutes, maxSeconds, minLength, maxLength;
+            boolean valid, validLength;
 
-            ResultSet resultSet = dbManager.getSongByLength(minLength, maxLength);
+            minHours = hoursMin.getText();
+            minMinutes = minutesMin.getText();
+            minSeconds = secondsMin.getText();
+
+            maxHours = hoursMax.getText();
+            maxMinutes = minutesMax.getText();
+            maxSeconds = secondsMax.getText();
             try
             {
-                this.songList.getItems().clear();
-                while (resultSet.next())
+                if (validTimes(minHours, minMinutes, minSeconds) && validTimes(maxHours, maxMinutes, maxSeconds))
                 {
-                    String song = resultSet.getString("SongTitle");
-                    System.out.println(song);
-                    this.songList.getItems().add(song);
+                    minLength = getTimeAsFormattedString(minHours, minMinutes, minSeconds);
+                    maxLength = getTimeAsFormattedString(maxHours, maxMinutes, maxSeconds);
+                    ResultSet resultSet = dbManager.getSongByLength(minLength, maxLength);
+                    try
+                    {
+                        this.songList.getItems().clear();
+                        while (resultSet.next())
+                        {
+                            String song = resultSet.getString("SongTitle");
+                            System.out.println(song);
+                            this.songList.getItems().add(song);
+                        }
+                    }
+                    catch(Exception e)
+                    {
+                        System.out.println(e);
+                    }
                 }
             }
-            catch(Exception e)
+            catch(Exception ex)
             {
-                System.out.println(e);
+                ex.printStackTrace();
             }
+
+
         }
     }
     @FXML protected void selectYearBtnClick()
     {
-        if (this.genreComboBox.getValue() != null)
+        /*if (this.genreComboBox.getValue() != null)
         {
-            String startYear = this.startYear.getValue().toString();
+            String hoursString, minutesString, secondsString;
+            boolean valid, validLength;
+
+            hoursString = hoursMin.getText();
+            minutesString = minutesMin.getText();
+            secondsString = secondsMin.getText();
+            try
+            {
+                if (validTimes(hoursString, minutesString, secondsString))
+                {
+
+                }
+            }
+            catch(Exception ex)
+            {
+                ex.printStackTrace();
+            }
+
+            String startYear =
             String endYear = this.endYear.getValue().toString();
 
             ResultSet resultSet = dbManager.getSongByYear(startYear, endYear);
@@ -388,7 +434,23 @@ public class BrowseSongsController implements Initializable
             {
                 System.out.println(e);
             }
+        }*/
+    }
+
+    public boolean validTimes(String hours, String minutes, String seconds) throws Exception
+    {
+        if (Integer.parseInt(hours) < 0 || Integer.parseInt(minutes) < 0 ||
+                Integer.parseInt(minutes) > 59 || Integer.parseInt(seconds) < 0
+                || Integer.parseInt(seconds) > 59)
+        {
+            return false;
         }
+        return true;
+    }
+
+    public String getTimeAsFormattedString(String hours, String minutes, String seconds)
+    {
+        return hours + ":" + minutes + ":" + seconds;
     }
 
 }
