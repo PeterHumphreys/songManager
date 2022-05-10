@@ -196,8 +196,6 @@ public class BrowseSongsController implements Initializable
 
         }
         populateComboBoxes();
-
-
     }
 
     @FXML protected void selectCriteriaBtnClick()
@@ -354,7 +352,6 @@ public class BrowseSongsController implements Initializable
                 this.hoursMax.getText() != null && this.minutesMax.getText() != null && this.secondsMax.getText() != null)
         {
             String minHours, minMinutes, minSeconds, maxHours, maxMinutes, maxSeconds, minLength, maxLength;
-            boolean valid, validLength;
 
             minHours = hoursMin.getText();
             minMinutes = minutesMin.getText();
@@ -396,45 +393,37 @@ public class BrowseSongsController implements Initializable
     }
     @FXML protected void selectYearBtnClick()
     {
-        /*if (this.genreComboBox.getValue() != null)
+        //No nulls
+        if (this.startYear.getValue() != null && this.endYear.getValue() != null)
         {
-            String hoursString, minutesString, secondsString;
-            boolean valid, validLength;
-
-            hoursString = hoursMin.getText();
-            minutesString = minutesMin.getText();
-            secondsString = secondsMin.getText();
-            try
+            //Start year <= end year
+            if ((Integer.parseInt(this.startYear.getValue().toString()))
+                    <= (Integer.parseInt(this.endYear.getValue().toString())))
             {
-                if (validTimes(hoursString, minutesString, secondsString))
+                //Get values as strings
+                String startYear, endYear;
+                startYear = this.startYear.getValue().toString();
+                endYear = this.endYear.getValue().toString();
+
+                ResultSet resultSet = dbManager.getSongByYear(startYear, endYear);
+                try
                 {
-
+                    this.songList.getItems().clear();
+                    while (resultSet.next())
+                    {
+                        String song = resultSet.getString("SongTitle");
+                        System.out.println(song);
+                        this.songList.getItems().add(song);
+                    }
                 }
-            }
-            catch(Exception ex)
-            {
-                ex.printStackTrace();
-            }
-
-            String startYear =
-            String endYear = this.endYear.getValue().toString();
-
-            ResultSet resultSet = dbManager.getSongByYear(startYear, endYear);
-            try
-            {
-                this.songList.getItems().clear();
-                while (resultSet.next())
+                catch(Exception e)
                 {
-                    String song = resultSet.getString("SongTitle");
-                    System.out.println(song);
-                    this.songList.getItems().add(song);
+                    System.out.println(e);
                 }
+
             }
-            catch(Exception e)
-            {
-                System.out.println(e);
-            }
-        }*/
+
+        }
     }
 
     public boolean validTimes(String hours, String minutes, String seconds) throws Exception
